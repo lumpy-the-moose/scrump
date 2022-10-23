@@ -1,0 +1,25 @@
+.home {
+  &__form {
+    @extend %form;
+  }
+
+  &__field {
+    @extend %field;
+  }
+
+  &__button {
+    @extend %button;
+
+    width: 150px;
+    height: 45px;
+
+    &:disabled {
+      background-color: $color-grey;
+
+      &:hover {
+        color: $color-accent;
+        opacity: 0.7;
+      }
+    }
+  }
+}

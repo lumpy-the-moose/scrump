@@ -1,7 +1,7 @@
 {
   "name": "scrump",
   "version": "0.1.0",
-  "homepage": "https://gitname.github.io/react-gh-pages",
+  "homepage": "https://lumpy-the-moose.github.io/scrump",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",

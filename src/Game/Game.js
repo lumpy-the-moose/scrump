@@ -61,7 +61,12 @@ function Game(props) {
         <Logo />
         |ScrumP| <br /> |Planning Poker|
       </div>
-      <Header gameId={props.gameId} setGameId={props.setGameId} setNickname={props.setNickname} />
+      <Header
+        gameId={props.gameId}
+        nickname={props.nickname}
+        setGameId={props.setGameId}
+        setNickname={props.setNickname}
+      />
       <Task
         toggleResult={toggleResult}
         toggleDeckState={toggleDeckState}

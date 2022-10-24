@@ -2,11 +2,15 @@ import Button from '../Common/Button';
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 function Login(props) {
   const navigate = useNavigate();
 
+  let [cookies, setCookie] = useCookies();
+
   const toGame = () => {
+    setCookie('user', props.nickname, { path: '/' });
     navigate('/game');
   };
 

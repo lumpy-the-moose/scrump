@@ -3,6 +3,7 @@ import DeckType from './DeckType';
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const deckTypeData = [
   {
@@ -22,7 +23,11 @@ const deckTypeData = [
 function Home(props) {
   const navigate = useNavigate();
 
+  let [cookies, setCookie] = useCookies();
+
   const toLogin = () => {
+    setCookie('gameId', props.gameId, { path: '/' });
+    setCookie('deckType', props.deckType, { path: '/' });
     navigate('/login');
   };
 

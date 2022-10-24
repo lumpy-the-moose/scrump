@@ -1,17 +1,25 @@
 import Button from '../Common/Button';
 
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 function Header(props) {
   const navigate = useNavigate();
 
+  let [cookies, setCookie, removeCookie] = useCookies();
+
   const Home = () => {
+    removeCookie('gameId', { path: '/' });
+    setCookie('deckType', 'mod', { path: '/' });
+    removeCookie('user', { path: '/' });
+
     props.setGameId('');
     props.setNickname('');
     navigate('/');
   };
 
   const toLogin = () => {
+    removeCookie('user', { path: '/' });
     props.setNickname('');
     navigate('/login');
   };

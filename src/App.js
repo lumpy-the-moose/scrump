@@ -3,12 +3,33 @@ import Login from './Home/Login';
 import Game from './Game/Game';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 function App() {
-  let [deckType, setDeckType] = useState('mod');
+  let [cookies, setCookie] = useCookies();
+
   let [gameId, setGameId] = useState();
+  let [deckType, setDeckType] = useState();
   let [nickname, setNickname] = useState();
+
+  useEffect(() => {
+    if (!gameId) {
+      setGameId(cookies.gameId);
+    }
+
+    if (!cookies.deckType) {
+      setCookie('deckType', 'mod', { path: '/' });
+    }
+
+    if (!deckType) {
+      setDeckType(cookies.deckType);
+    }
+
+    if (!nickname) {
+      setNickname(cookies.user);
+    }
+  }, []);
 
   function gameIdHandler(value) {
     setGameId(value);
@@ -29,7 +50,12 @@ function App() {
           <Route
             path="/"
             element={
-              <Home gameId={gameId} setGameId={gameIdHandler} setDeckType={deckTypeHandler} />
+              <Home
+                gameId={gameId}
+                deckType={deckType}
+                setGameId={gameIdHandler}
+                setDeckType={deckTypeHandler}
+              />
             }
           />
           <Route

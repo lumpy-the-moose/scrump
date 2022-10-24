@@ -23,7 +23,7 @@ function Home(props) {
   const navigate = useNavigate();
 
   const toLogin = () => {
-    navigate('/scrump/login');
+    navigate('/login');
   };
 
   return (

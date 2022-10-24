@@ -24,20 +24,20 @@ function App() {
 
   return (
     <>
-      <Router>
+      <Router basename="/scrump">
         <Routes>
           <Route
-            path="/scrump/"
+            path="/"
             element={
               <Home gameId={gameId} setGameId={gameIdHandler} setDeckType={deckTypeHandler} />
             }
           />
           <Route
-            path="/scrump/login"
+            path="/login"
             element={<Login nickname={nickname} setNickname={nicknameHandler} />}
           />
           <Route
-            path="/scrump/game"
+            path="/game"
             element={
               <Game
                 gameId={gameId}

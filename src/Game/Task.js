@@ -3,9 +3,10 @@ import Button from '../Common/Button';
 import React, { useState } from 'react';
 
 function Task(props) {
-  let [gameState, setGameState] = useState('Start');
+  let [gameState, setGameState] = useState('waiting');
   let [textAreaState, setTextAreaState] = useState(false);
   let [textAreaValue, setTextAreaValue] = useState();
+  let [stateButtonText, setStateButtonText] = useState('Start');
   let [stateMessage, setStateMessage] = useState('Waiting for task');
   let [taskStateClasses, setTaskStateClasses] = useState('task__state');
 
@@ -13,25 +14,28 @@ function Task(props) {
 
   function changeGameState() {
     switch (gameState) {
-      case 'Start':
-        setGameState('Stop');
+      case 'waiting':
+        setGameState('voting');
         setTextAreaState(true);
+        setStateButtonText('Stop');
         setTaskStateClasses('task__state task__state--orange');
         setStateMessage('In progress');
         props.toggleDeckState();
         break;
-      case 'Stop':
-        setGameState('New Task');
+      case 'voting':
+        setGameState('results');
+        setStateButtonText('New Task');
         setTaskStateClasses('task__state task__state--green');
         setStateMessage('Results');
         props.toggleResult();
         props.toggleDeckState();
         break;
-      case 'New Task':
+      case 'results':
+        setGameState('waiting');
         task.current.value = '';
         setTextAreaValue('');
-        setGameState('Start');
         setTextAreaState(false);
+        setStateButtonText('Start');
         setTaskStateClasses('task__state');
         setStateMessage('Waiting for task');
         props.toggleResult();
@@ -58,7 +62,7 @@ function Task(props) {
       ></textarea>
       <Button
         className="task__button"
-        text={gameState}
+        text={stateButtonText}
         onClick={changeGameState}
         disabled={!textAreaValue}
       />

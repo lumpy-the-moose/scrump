@@ -7,7 +7,7 @@ function Login(props) {
   const navigate = useNavigate();
 
   const toGame = () => {
-    navigate('/scrump/game');
+    navigate('/game');
   };
 
   return (

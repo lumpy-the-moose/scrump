@@ -8,12 +8,12 @@ function Header(props) {
   const Home = () => {
     props.setGameId('');
     props.setNickname('');
-    navigate('/scrump/');
+    navigate('/');
   };
 
   const toLogin = () => {
     props.setNickname('');
-    navigate('/scrump/login');
+    navigate('/login');
   };
 
   return (

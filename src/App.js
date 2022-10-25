@@ -29,7 +29,7 @@ function App() {
     if (!nickname) {
       setNickname(cookies.user);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function gameIdHandler(value) {
     setGameId(value);
@@ -67,9 +67,10 @@ function App() {
             element={
               <Game
                 gameId={gameId}
-                setGameId={gameIdHandler}
                 deckType={deckType}
                 nickname={nickname}
+                setGameId={gameIdHandler}
+                setDeckType={deckTypeHandler}
                 setNickname={nicknameHandler}
               />
             }

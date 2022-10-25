@@ -23,7 +23,7 @@ const deckTypeData = [
 function Home(props) {
   const navigate = useNavigate();
 
-  let [cookies, setCookie] = useCookies();
+  let [, setCookie] = useCookies();
 
   const toLogin = () => {
     setCookie('gameId', props.gameId, { path: '/' });

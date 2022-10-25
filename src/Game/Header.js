@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 function Header(props) {
   const navigate = useNavigate();
 
-  let [cookies, setCookie, removeCookie] = useCookies();
+  let [, setCookie, removeCookie] = useCookies();
 
   const Home = () => {
     removeCookie('gameId', { path: '/' });
@@ -14,6 +14,7 @@ function Header(props) {
     removeCookie('user', { path: '/' });
 
     props.setGameId('');
+    props.setDeckType('mod');
     props.setNickname('');
     navigate('/');
   };

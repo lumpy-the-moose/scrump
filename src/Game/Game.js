@@ -65,6 +65,7 @@ function Game(props) {
         gameId={props.gameId}
         nickname={props.nickname}
         setGameId={props.setGameId}
+        setDeckType={props.setDeckType}
         setNickname={props.setNickname}
       />
       <Task

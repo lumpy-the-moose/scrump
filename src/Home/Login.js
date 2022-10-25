@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 function Login(props) {
   const navigate = useNavigate();
 
-  let [cookies, setCookie] = useCookies();
+  let [, setCookie] = useCookies();
 
   const toGame = () => {
     setCookie('user', props.nickname, { path: '/' });

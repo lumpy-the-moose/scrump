@@ -55,6 +55,8 @@ function Game(props) {
     setCard('');
   }
 
+  console.log(props.pokerSession);
+
   return (
     <>
       <div className="logo">

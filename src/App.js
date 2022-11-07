@@ -12,6 +12,7 @@ function App() {
   let [gameId, setGameId] = useState();
   let [deckType, setDeckType] = useState();
   let [nickname, setNickname] = useState();
+  let [pokerSession, setPokerSession] = useState();
 
   useEffect(() => {
     if (!gameId) {
@@ -43,24 +44,26 @@ function App() {
     setNickname(value);
   }
 
+  function sessionDataHandler(value) {
+    setPokerSession(value);
+  }
+
   return (
     <>
       <Router basename="/scrump">
         <Routes>
+          <Route path="/" element={<Login nickname={nickname} setNickname={nicknameHandler} />} />
           <Route
-            path="/"
+            path="/login"
             element={
               <Home
                 gameId={gameId}
                 deckType={deckType}
                 setGameId={gameIdHandler}
                 setDeckType={deckTypeHandler}
+                setPokerSession={sessionDataHandler}
               />
             }
-          />
-          <Route
-            path="/login"
-            element={<Login nickname={nickname} setNickname={nicknameHandler} />}
           />
           <Route
             path="/game"
@@ -72,6 +75,7 @@ function App() {
                 setGameId={gameIdHandler}
                 setDeckType={deckTypeHandler}
                 setNickname={nicknameHandler}
+                pokerSession={pokerSession}
               />
             }
           />

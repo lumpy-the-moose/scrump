@@ -23,12 +23,28 @@ const deckTypeData = [
 function Home(props) {
   const navigate = useNavigate();
 
-  let [, setCookie] = useCookies();
+  let [cookies, setCookie] = useCookies();
 
-  const toLogin = () => {
-    setCookie('gameId', props.gameId, { path: '/' });
-    setCookie('deckType', props.deckType, { path: '/' });
-    navigate('/login');
+  const toGame = () => {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+        if (response.status) {
+          alert(response.message);
+        } else {
+          setCookie('gameId', props.gameId, { path: '/' });
+          setCookie('deckType', props.deckType, { path: '/' });
+          props.setPokerSession(response.data);
+          navigate('/game');
+        }
+      }
+    };
+
+    xhttp.open('POST', 'http://185.25.116.234:8080/scrum/poker/sessions', true);
+    xhttp.setRequestHeader('Authorization', cookies['Authorization']);
+    xhttp.send();
   };
 
   return (
@@ -42,7 +58,7 @@ function Home(props) {
         onSubmit={e => {
           e.preventDefault();
           if (props.gameId) {
-            toLogin();
+            toGame();
           }
         }}
       >
@@ -53,7 +69,7 @@ function Home(props) {
           onChange={e => props.setGameId(e.target.value)}
           autoFocus
         />
-        <Button className="home__button" text="Enter" onClick={toLogin} disabled={!props.gameId} />
+        <Button className="home__button" text="Enter" onClick={toGame} disabled={!props.gameId} />
         <DeckType deckTypeData={deckTypeData} setDeckType={props.setDeckType} />
       </form>
     </div>

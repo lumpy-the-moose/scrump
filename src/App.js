@@ -1,5 +1,5 @@
 import Home from './Home/Home';
-import Login from './Home/Login';
+import Create from './Home/Create';
 import Game from './Game/Game';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -52,11 +52,11 @@ function App() {
     <>
       <Router basename="/scrump">
         <Routes>
-          <Route path="/" element={<Login nickname={nickname} setNickname={nicknameHandler} />} />
+          <Route path="/" element={<Home nickname={nickname} setNickname={nicknameHandler} />} />
           <Route
-            path="/login"
+            path="/create"
             element={
-              <Home
+              <Create
                 gameId={gameId}
                 deckType={deckType}
                 setGameId={gameIdHandler}

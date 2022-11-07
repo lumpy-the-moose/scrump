@@ -8,7 +8,7 @@ function Header(props) {
 
   let [, setCookie, removeCookie] = useCookies();
 
-  const Home = () => {
+  const Create = () => {
     removeCookie('gameId', { path: '/' });
     setCookie('deckType', 'mod', { path: '/' });
     removeCookie('user', { path: '/' });
@@ -16,13 +16,13 @@ function Header(props) {
     props.setGameId('');
     props.setDeckType('mod');
     props.setNickname('');
-    navigate('/');
+    navigate('/create');
   };
 
-  const toLogin = () => {
+  const Home = () => {
     removeCookie('user', { path: '/' });
     props.setNickname('');
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -31,8 +31,8 @@ function Header(props) {
         Game# <p className="header__title--accent">{props.gameId}</p>
       </h1>
       <div className="header__manage">
-        <Button className="header__button" text="New Game" onClick={Home} />
-        <Button className="header__button" text="Log Out" onClick={toLogin} />
+        <Button className="header__button" text="New Game" onClick={Create} />
+        <Button className="header__button" text="Log Out" onClick={Home} />
       </div>
     </div>
   );

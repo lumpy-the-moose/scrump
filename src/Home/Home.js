@@ -1,31 +1,15 @@
 import Button from '../Common/Button';
-import DeckType from './DeckType';
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const deckTypeData = [
-  {
-    value: 'mod',
-    btnText: '0 ½ 1 2 3 5 8 13 20 40 100 ? ☕',
-  },
-  {
-    value: 'fibo',
-    btnText: '0 1 2 3 5 8 13 21 34 55 89 ? ☕',
-  },
-  {
-    value: 'powers',
-    btnText: '0 1 2 4 8 16 32 64 ? ☕',
-  },
-];
-
 function Home(props) {
   const navigate = useNavigate();
 
-  let [cookies, setCookie] = useCookies();
+  let [, setCookie] = useCookies();
 
-  const toGame = () => {
+  const toCreate = () => {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -34,17 +18,19 @@ function Home(props) {
         if (response.status) {
           alert(response.message);
         } else {
-          setCookie('gameId', props.gameId, { path: '/' });
-          setCookie('deckType', props.deckType, { path: '/' });
-          props.setPokerSession(response.data);
-          navigate('/game');
+          setCookie('Authorization', response.data, { path: '/' });
+          navigate('/create');
         }
       }
     };
 
-    xhttp.open('POST', 'http://185.25.116.234:8080/scrum/poker/sessions', true);
-    xhttp.setRequestHeader('Authorization', cookies['Authorization']);
-    xhttp.send();
+    xhttp.open('POST', 'http://185.25.116.234:8080/api/auth/login', true);
+    xhttp.setRequestHeader('Content-type', 'application/json');
+    xhttp.send(
+      JSON.stringify({
+        username: props.nickname,
+      })
+    );
   };
 
   return (
@@ -57,21 +43,26 @@ function Home(props) {
         className="home__form"
         onSubmit={e => {
           e.preventDefault();
-          if (props.gameId) {
-            toGame();
+          if (props.nickname) {
+            toCreate();
           }
         }}
       >
         <input
           className="home__field"
           type="text"
-          placeholder="Game#"
-          onChange={e => props.setGameId(e.target.value)}
+          placeholder="Nickname"
+          onChange={e => props.setNickname(e.target.value)}
           autoFocus
         />
-        <Button className="home__button" text="Enter" onClick={toGame} disabled={!props.gameId} />
-        <DeckType deckTypeData={deckTypeData} setDeckType={props.setDeckType} />
+        <Button
+          className="home__button"
+          text="Join"
+          onClick={toCreate}
+          disabled={!props.nickname}
+        />
       </form>
+      <div className="home__loader"></div>
     </div>
   );
 }

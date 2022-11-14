@@ -24,7 +24,7 @@ function Home(props) {
       }
     };
 
-    xhttp.open('POST', 'http://185.25.116.234:8080/api/auth/login', true);
+    xhttp.open('POST', 'https://scrum-poker.space/api/auth/login', true);
     xhttp.setRequestHeader('Content-type', 'application/json');
     xhttp.send(
       JSON.stringify({

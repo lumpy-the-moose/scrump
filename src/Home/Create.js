@@ -42,7 +42,7 @@ function Create(props) {
       }
     };
 
-    xhttp.open('POST', 'http://185.25.116.234:8080/scrum/poker/sessions', true);
+    xhttp.open('POST', 'https://scrum-poker.space/scrum/poker/sessions', true);
     xhttp.setRequestHeader('Authorization', cookies['Authorization']);
     xhttp.send();
   };

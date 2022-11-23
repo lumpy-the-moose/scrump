@@ -3,8 +3,8 @@ function Radio(props) {
     <>
       <input
         type="radio"
-        className={props.inputClassName}
         name={props.name}
+        className={props.inputClassName}
         id={props.value}
         value={props.value}
         defaultChecked={props.defaultChecked}

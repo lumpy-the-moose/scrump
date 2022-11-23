@@ -48,10 +48,12 @@ function Create(props) {
   };
 
   return (
-    <div className="create">
-      <div className="logo">
-        <Logo />
-        |ScrumP| <br /> |Planning Poker|
+    <>
+      <div className="header">
+        <div className="logo">
+          <Logo />
+          |ScrumP| <br /> |Planning Poker|
+        </div>
       </div>
       <form
         className="create__form"
@@ -72,7 +74,7 @@ function Create(props) {
         <Button className="create__button" text="Enter" onClick={toGame} disabled={!props.gameId} />
         <DeckType deckTypeData={deckTypeData} setDeckType={props.setDeckType} />
       </form>
-    </div>
+    </>
   );
 }
 

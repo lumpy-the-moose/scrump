@@ -34,12 +34,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     margin-left: auto;
 
     background-color: $color-bg-primary;
-    color: $color-green;
     box-shadow: inset -4px -4px 9px #ffffffb3, inset 4px 4px 5px #a6b4c8b3;
     border-radius: 20px;
   }

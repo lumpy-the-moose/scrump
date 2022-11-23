@@ -34,10 +34,12 @@ function Home(props) {
   };
 
   return (
-    <div className="home">
-      <div className="logo">
-        <Logo />
-        |ScrumP| <br /> |Planning Poker|
+    <>
+      <div className="header">
+        <div className="logo">
+          <Logo />
+          |ScrumP| <br /> |Planning Poker|
+        </div>
       </div>
       <form
         className="home__form"
@@ -63,7 +65,7 @@ function Home(props) {
         />
       </form>
       <div className="home__loader"></div>
-    </div>
+    </>
   );
 }
 

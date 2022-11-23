@@ -2,34 +2,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 170px;
   margin-top: 50px;
   gap: 10px;
 
   color: $color-text;
 
-  transition: opacity 300ms ease;
-
   &__input {
     display: none;
 
-    &:checked + .deck-type__label {
-      background-color: $color-green;
+    &:checked ~ .deck-type__custom-input > .deck-type__custom-dot {
+      background-color: #41d9e2;
     }
+  }
+
+  &__box {
+    position: relative;
+  }
+
+  &__custom-input {
+    position: absolute;
+    top: 9px;
+    left: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background-color: $color-bg-primary;
+    box-shadow: inset -4px -4px 9px #ffffffb3, inset 4px 4px 5px #a6b4c8b3;
+    border-radius: 40px;
+  }
+
+  &__custom-dot {
+    width: 17px;
+    height: 17px;
+    background-color: $color-grey;
+    border-radius: 40px;
+
+    transition: all 250ms ease;
   }
 
   &__label {
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 280px;
-    height: 40px;
-    padding: 5px;
+    width: 300px;
+    height: 50px;
+    padding: 10px 10px 10px 60px;
 
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
 
-    background-color: $color-grey;
-    border-radius: 5px;
+    background-color: $color-bg-primary;
+    box-shadow: -12px -12px 20px #ffffffcc, 10px 10px 20px #a6b4c8b3;
+    border-radius: 40px;
   }
 }

@@ -1,3 +1,4 @@
+import { ReactComponent as Logo } from '../logo.svg';
 import Button from '../Common/Button';
 
 import { useNavigate } from 'react-router-dom';
@@ -27,9 +28,10 @@ function Header(props) {
 
   return (
     <div className="header">
-      <h1 className="header__title">
-        Game# <p className="header__title--accent">{props.gameId}</p>
-      </h1>
+      <div className="logo">
+        <Logo />
+        |ScrumP| <br /> |Planning Poker|
+      </div>
       <div className="header__manage">
         <Button className="header__button" text="New Game" onClick={Create} />
         <Button className="header__button" text="Log Out" onClick={Home} />

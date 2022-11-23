@@ -4,7 +4,8 @@ function Task(props) {
       <h2 className="team__title">Team</h2>
       <div className="team">
         <div className="team__user">
-          {props.nickname} <span className="team__answer">{props.card}</span>
+          {props.nickname}
+          <span className="team__answer">{props.card}</span>
         </div>
       </div>
     </>

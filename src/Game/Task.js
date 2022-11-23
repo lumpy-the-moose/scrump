@@ -49,25 +49,32 @@ function Task(props) {
   }
 
   return (
-    <div className="task">
-      <textarea
-        className="task__field"
-        ref={task}
-        name="task"
-        rows="5"
-        placeholder="Describe your task"
-        onChange={e => setTextAreaValue(e.target.value)}
-        disabled={textAreaState}
-        autoFocus
-      ></textarea>
-      <Button
-        className="task__button"
-        text={stateButtonText}
-        onClick={changeGameState}
-        disabled={!textAreaValue}
-      />
-      <div className={taskStateClasses}>{stateMessage}</div>
-    </div>
+    <>
+      <h1 className="task__title">
+        Game <span className="task__title--accent">{props.gameId}</span>
+      </h1>
+      <div className="task">
+        <textarea
+          className="task__field"
+          ref={task}
+          name="task"
+          rows="5"
+          placeholder="Describe your task"
+          onChange={e => setTextAreaValue(e.target.value)}
+          disabled={textAreaState}
+          autoFocus
+        ></textarea>
+        <div>
+          <Button
+            className="task__button"
+            text={stateButtonText}
+            onClick={changeGameState}
+            disabled={!textAreaValue}
+          />
+          <div className={taskStateClasses}>{stateMessage}</div>
+        </div>
+      </div>
+    </>
   );
 }
 

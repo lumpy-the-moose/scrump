@@ -2,7 +2,6 @@ import Header from './Header';
 import Task from './Task';
 import Team from './Team';
 import Deck from './Deck';
-import { ReactComponent as Logo } from '../logo.svg';
 
 import { useState } from 'react';
 
@@ -55,14 +54,8 @@ function Game(props) {
     setCard('');
   }
 
-  console.log(props.pokerSession);
-
   return (
     <>
-      <div className="logo">
-        <Logo />
-        |ScrumP| <br /> |Planning Poker|
-      </div>
       <Header
         gameId={props.gameId}
         nickname={props.nickname}

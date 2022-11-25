@@ -4,9 +4,14 @@ import { CookiesProvider } from 'react-cookie';
 import './sass/main.scss';
 import App from './App';
 
+import { Provider } from 'react-redux';
+import { store } from './App/store';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <CookiesProvider>
-    <App />
-  </CookiesProvider>
+  <Provider store={store}>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </Provider>
 );

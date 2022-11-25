@@ -1,7 +1,28 @@
 import Radio from '../Common/Radio';
 
-function DeckType(props) {
-  const data = props.deckTypeData.map((item, index) => (
+import { useDispatch } from 'react-redux';
+
+import { setDeckType } from '../App/authSlice';
+
+const deckTypeData = [
+  {
+    value: 'mod',
+    btnText: '0 ½ 1 2 3 5 8 13 20 40 100 ? ☕',
+  },
+  {
+    value: 'fibo',
+    btnText: '0 1 2 3 5 8 13 21 34 55 89 ? ☕',
+  },
+  {
+    value: 'powers',
+    btnText: '0 1 2 4 8 16 32 64 ? ☕',
+  },
+];
+
+function DeckType() {
+  const dispatch = useDispatch();
+
+  const data = deckTypeData.map((item, index) => (
     <div className="deck-type__box">
       <Radio
         name="dt"
@@ -12,7 +33,7 @@ function DeckType(props) {
         text={item.btnText}
         defaultChecked={index === 0}
         onChange={e => {
-          props.setDeckType(e.target.value);
+          dispatch(setDeckType(e.target.value));
         }}
       />
       <div className="deck-type__custom-input">

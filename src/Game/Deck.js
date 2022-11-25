@@ -1,13 +1,17 @@
 import Radio from '../Common/Radio';
 
+import { useSelector } from 'react-redux';
+
 function Deck(props) {
+  const deckType = useSelector(state => state.auth.deckType.payload);
+
   const modExceptions = [5, 9, 11, 12, 13, 15, 16, 17];
   const fiboExceptions = [1, 5, 9, 10, 12, 14, 16, 18];
   const powersExceptions = [1, 4, 6, 8, 10, 11, 13, 14, 15, 17, 18];
 
   let exceptions;
 
-  switch (props.deckType) {
+  switch (deckType) {
     case 'mod':
       exceptions = modExceptions;
       break;

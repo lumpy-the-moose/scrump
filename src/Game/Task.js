@@ -2,6 +2,8 @@ import Button from '../Common/Button';
 
 import React, { useState } from 'react';
 
+import { useSelector } from 'react-redux';
+
 function Task(props) {
   let [gameState, setGameState] = useState('waiting');
   let [textAreaState, setTextAreaState] = useState(false);
@@ -11,6 +13,8 @@ function Task(props) {
   let [taskStateClasses, setTaskStateClasses] = useState('task__state');
 
   let task = React.createRef();
+
+  const gameId = useSelector(state => state.auth.gameId.payload);
 
   function changeGameState() {
     switch (gameState) {
@@ -51,7 +55,7 @@ function Task(props) {
   return (
     <>
       <h1 className="task__title">
-        Game <span className="task__title--accent">{props.gameId}</span>
+        Game <span className="task__title--accent">{gameId}</span>
       </h1>
       <div className="task">
         <textarea

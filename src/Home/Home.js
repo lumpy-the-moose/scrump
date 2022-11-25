@@ -3,11 +3,16 @@ import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { useSelector, useDispatch } from 'react-redux';
 
-function Home(props) {
+import { setNickname } from '../App/authSlice';
+
+function Home() {
   const navigate = useNavigate();
-
   let [, setCookie] = useCookies();
+
+  const dispatch = useDispatch();
+  const nickname = useSelector(state => state.auth.nickname.payload);
 
   const toCreate = () => {
     let xhttp = new XMLHttpRequest();
@@ -19,6 +24,7 @@ function Home(props) {
           alert(response.message);
         } else {
           setCookie('Authorization', response.data, { path: '/' });
+          setCookie('nickname', nickname, { path: '/' });
           navigate('/create');
         }
       }
@@ -28,7 +34,7 @@ function Home(props) {
     xhttp.setRequestHeader('Content-type', 'application/json');
     xhttp.send(
       JSON.stringify({
-        username: props.nickname,
+        username: nickname,
       })
     );
   };
@@ -45,7 +51,7 @@ function Home(props) {
         className="home__form"
         onSubmit={e => {
           e.preventDefault();
-          if (props.nickname) {
+          if (nickname) {
             toCreate();
           }
         }}
@@ -54,15 +60,10 @@ function Home(props) {
           className="home__field"
           type="text"
           placeholder="Nickname"
-          onChange={e => props.setNickname(e.target.value)}
+          onChange={e => dispatch(setNickname(e.target.value))}
           autoFocus
         />
-        <Button
-          className="home__button"
-          text="Join"
-          onClick={toCreate}
-          disabled={!props.nickname}
-        />
+        <Button className="home__button" text="Join" onClick={toCreate} disabled={!nickname} />
       </form>
       <div className="home__loader"></div>
     </>

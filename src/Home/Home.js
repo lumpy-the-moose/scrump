@@ -1,4 +1,3 @@
-import Button from '../Common/Button';
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +8,7 @@ import { setNickname } from '../App/authSlice';
 
 function Home() {
   const navigate = useNavigate();
-  let [, setCookie] = useCookies();
+  let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
   const nickname = useSelector(state => state.auth.nickname.payload);
@@ -24,7 +23,6 @@ function Home() {
           alert(response.message);
         } else {
           setCookie('Authorization', response.data, { path: '/' });
-          setCookie('nickname', nickname, { path: '/' });
           navigate('/create');
         }
       }
@@ -60,10 +58,21 @@ function Home() {
           className="home__field"
           type="text"
           placeholder="Nickname"
-          onChange={e => dispatch(setNickname(e.target.value))}
+          onChange={e => {
+            dispatch(setNickname(e.target.value));
+            setCookie('nickname', e.target.value, { path: '/' });
+          }}
+          value={nickname ? nickname : cookies.nickname ? cookies.nickname : ''}
           autoFocus
         />
-        <Button className="home__button" text="Join" onClick={toCreate} disabled={!nickname} />
+        <button
+          type="button"
+          className="home__button"
+          onClick={toCreate}
+          disabled={!nickname && !cookies.nickname}
+        >
+          Join
+        </button>
       </form>
       <div className="home__loader"></div>
     </>

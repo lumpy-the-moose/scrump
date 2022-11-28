@@ -1,4 +1,3 @@
-import Button from '../Common/Button';
 import DeckType from './DeckType';
 import { ReactComponent as Logo } from '../logo.svg';
 
@@ -14,28 +13,25 @@ function Create() {
 
   const dispatch = useDispatch();
   const gameId = useSelector(state => state.auth.gameId.payload);
-  const deckType = useSelector(state => state.auth.deckType.payload);
 
   const toGame = () => {
-    // let xhttp = new XMLHttpRequest();
+    let xhttp = new XMLHttpRequest();
 
-    // xhttp.onreadystatechange = function () {
-    //   if (this.readyState === 4 && this.status === 200) {
-    //     const response = JSON.parse(this.responseText);
-    //     if (response.status) {
-    //       alert(response.message);
-    //     } else {
-    setCookie('gameId', gameId, { path: '/' });
-    setCookie('deckType', deckType, { path: '/' });
-    // dispatch(setPokerSession(response.data));
-    navigate('/game');
-    //     }
-    //   }
-    // };
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+        if (response.status) {
+          alert(response.message);
+        } else {
+          dispatch(setPokerSession(response.data));
+          navigate('/game');
+        }
+      }
+    };
 
-    // xhttp.open('POST', 'https://scrum-poker.space/scrum/poker/sessions', true);
-    // xhttp.setRequestHeader('Authorization', cookies['Authorization']);
-    // xhttp.send();
+    xhttp.open('POST', 'https://scrum-poker.space/scrum/poker/sessions', true);
+    xhttp.setRequestHeader('Authorization', cookies['Authorization']);
+    xhttp.send();
   };
 
   return (
@@ -56,13 +52,24 @@ function Create() {
         }}
       >
         <input
-          className="create__field"
           type="text"
           placeholder="Game#"
-          onChange={e => dispatch(setGameId(e.target.value))}
+          className="create__field"
+          onChange={e => {
+            dispatch(setGameId(e.target.value));
+            setCookie('gameId', e.target.value, { path: '/' });
+          }}
+          value={gameId ? gameId : cookies.gameId ? cookies.gameId : ''}
           autoFocus
         />
-        <Button className="create__button" text="Enter" onClick={toGame} disabled={!gameId} />
+        <button
+          type="button"
+          className="create__button"
+          onClick={toGame}
+          disabled={!gameId && !cookies.gameId}
+        >
+          Enter
+        </button>
         <DeckType />
       </form>
     </>

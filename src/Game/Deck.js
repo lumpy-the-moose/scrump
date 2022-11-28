@@ -1,9 +1,15 @@
-import Radio from '../Common/Radio';
+import { useCookies } from 'react-cookie';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
+import { setSelectedCard } from '../App/gameSlice';
 
-function Deck(props) {
+function Deck() {
+  let [cookies] = useCookies();
+
+  const dispatch = useDispatch();
   const deckType = useSelector(state => state.auth.deckType.payload);
+  const deckDisabled = useSelector(state => state.game.deckDisabled);
+  const selectedCard = useSelector(state => state.game.selectedCard.payload);
 
   const modExceptions = [5, 9, 11, 12, 13, 15, 16, 17];
   const fiboExceptions = [1, 5, 9, 10, 12, 14, 16, 18];
@@ -11,7 +17,7 @@ function Deck(props) {
 
   let exceptions;
 
-  switch (deckType) {
+  switch (deckType ? deckType : cookies.deckType) {
     case 'mod':
       exceptions = modExceptions;
       break;
@@ -25,20 +31,47 @@ function Deck(props) {
       exceptions = modExceptions;
   }
 
-  const data = props.deckData.map((item, index) => {
+  const deckData = {
+    zero: '0',
+    half: '½',
+    one: '1',
+    two: '2',
+    three: '3',
+    four: '4',
+    five: '5',
+    eight: '8',
+    thirteen: '13',
+    sixteen: '16',
+    twenty: '20',
+    twentyOne: '21',
+    thirtyTwo: '32',
+    thirtyFour: '34',
+    forty: '40',
+    fiftyFive: '55',
+    sixtyFour: '64',
+    eightyNine: '89',
+    hundred: '100',
+    idk: '?',
+    coffee: '☕',
+  };
+
+  const deckMarkup = Object.values(deckData).map((item, index) => {
     return !exceptions.includes(index) ? (
-      <Radio
-        name="card"
-        inputClassName="deck__input"
-        labelClassName="deck__label"
-        key={Object.keys(item)[0]}
-        value={Object.values(item)[0]}
-        text={Object.values(item)[0]}
-        onChange={e => {
-          props.setCard(e.target.value);
-        }}
-        disabled={props.deckState}
-      />
+      <div key={item}>
+        <input
+          type="radio"
+          name="card"
+          id={item}
+          value={item}
+          className="deck__input"
+          disabled={deckDisabled}
+          checked={item === selectedCard}
+          onChange={e => dispatch(setSelectedCard(e.target.value))}
+        />
+        <label htmlFor={item} className="deck__label">
+          {item}
+        </label>
+      </div>
     ) : (
       false
     );
@@ -47,7 +80,7 @@ function Deck(props) {
   return (
     <>
       <h2 className="deck__title">Pick Your Card</h2>
-      <div className="deck">{data}</div>
+      <form className="deck">{deckMarkup}</form>
     </>
   );
 }

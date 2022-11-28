@@ -1,81 +1,57 @@
-import Button from '../Common/Button';
+import { useCookies } from 'react-cookie';
+import { useSelector, useDispatch } from 'react-redux';
 
-import React, { useState } from 'react';
+import { toVoting, toResults, toWaiting, setTaskMessage } from '../App/gameSlice';
 
-import { useSelector } from 'react-redux';
+function Task() {
+  let [cookies] = useCookies();
 
-function Task(props) {
-  let [gameState, setGameState] = useState('waiting');
-  let [textAreaState, setTextAreaState] = useState(false);
-  let [textAreaValue, setTextAreaValue] = useState();
-  let [stateButtonText, setStateButtonText] = useState('Start');
-  let [stateMessage, setStateMessage] = useState('Waiting for task');
-  let [taskStateClasses, setTaskStateClasses] = useState('task__state');
-
-  let task = React.createRef();
-
+  const dispatch = useDispatch();
   const gameId = useSelector(state => state.auth.gameId.payload);
-
-  function changeGameState() {
-    switch (gameState) {
-      case 'waiting':
-        setGameState('voting');
-        setTextAreaState(true);
-        setStateButtonText('Stop');
-        setTaskStateClasses('task__state task__state--orange');
-        setStateMessage('In progress');
-        props.toggleDeckState();
-        break;
-      case 'voting':
-        setGameState('results');
-        setStateButtonText('New Task');
-        setTaskStateClasses('task__state task__state--green');
-        setStateMessage('Results');
-        props.toggleResult();
-        props.toggleDeckState();
-        break;
-      case 'results':
-        setGameState('waiting');
-        task.current.value = '';
-        setTextAreaValue('');
-        setTextAreaState(false);
-        setStateButtonText('Start');
-        setTaskStateClasses('task__state');
-        setStateMessage('Waiting for task');
-        props.toggleResult();
-        props.uncheckCards();
-        break;
-      default:
-        setGameState('Start');
-        setTextAreaState(false);
-        setStateMessage('Waiting for task');
-    }
-  }
+  const gameStage = useSelector(state => state.game.gameStage);
+  const textareaDisabled = useSelector(state => state.game.textareaDisabled);
+  const taskMessage = useSelector(state => state.game.taskMessage.payload);
+  const stageButtonText = useSelector(state => state.game.stageButtonText);
+  const stageNotifyClasses = useSelector(state => state.game.stageNotifyClasses);
+  const stageNotifyText = useSelector(state => state.game.stageNotifyText);
 
   return (
     <>
       <h1 className="task__title">
-        Game <span className="task__title--accent">{gameId}</span>
+        Game <span className="task__title--accent">{gameId ? gameId : cookies.gameId}</span>
       </h1>
       <div className="task">
         <textarea
           className="task__field"
-          ref={task}
-          name="task"
           rows="5"
           placeholder="Describe your task"
-          onChange={e => setTextAreaValue(e.target.value)}
-          disabled={textAreaState}
           autoFocus
+          disabled={textareaDisabled}
+          onInput={e => dispatch(setTaskMessage(e.target.value))}
+          value={taskMessage}
         ></textarea>
-        <div>
-          <Button
+        <div className="task__manage">
+          <button
+            type="button"
             className="task__button"
-            text={stateButtonText}
-            onClick={changeGameState}
-            disabled={!textAreaValue}
-          />
-          <div className={taskStateClasses}>{stateMessage}</div>
+            disabled={!taskMessage}
+            onClick={e => {
+              // eslint-disable-next-line
+              switch (gameStage) {
+                case 'waiting':
+                  dispatch(toVoting());
+                  break;
+                case 'voting':
+                  dispatch(toResults());
+                  break;
+                case 'results':
+                  dispatch(toWaiting());
+              }
+            }}
+          >
+            {stageButtonText}
+          </button>
+          <div className={stageNotifyClasses}>{stageNotifyText}</div>
         </div>
       </div>
     </>

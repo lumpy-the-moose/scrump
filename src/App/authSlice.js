@@ -7,12 +7,15 @@ export const authSlice = createSlice({
     setNickname: (state, setState) => {
       state.nickname = setState;
     },
+
     setGameId: (state, setState) => {
       state.gameId = setState;
     },
+
     setDeckType: (state, setState) => {
       state.deckType = setState;
     },
+
     setPokerSession: (state, setState) => {
       state.pokerSession = setState;
     },

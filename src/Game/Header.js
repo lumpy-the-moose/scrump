@@ -1,31 +1,15 @@
 import { ReactComponent as Logo } from '../logo.svg';
-import Button from '../Common/Button';
 
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
 
-import { setNickname, setGameId, setDeckType } from '../App/authSlice';
-
-function Header(props) {
+function Header() {
   const navigate = useNavigate();
-  let [, setCookie, removeCookie] = useCookies();
-
-  const dispatch = useDispatch();
 
   const Create = () => {
-    removeCookie('gameId', { path: '/' });
-    setCookie('deckType', 'mod', { path: '/' });
-
-    dispatch(setGameId(''));
-    dispatch(setDeckType('mod'));
-
     navigate('/create');
   };
 
   const Home = () => {
-    removeCookie('user', { path: '/' });
-    dispatch(setNickname(''));
     navigate('/');
   };
 
@@ -36,8 +20,12 @@ function Header(props) {
         |ScrumP| <br /> |Planning Poker|
       </div>
       <div className="header__manage">
-        <Button className="header__button" text="New Game" onClick={Create} />
-        <Button className="header__button" text="Log Out" onClick={Home} />
+        <button className="header__button" onClick={Create}>
+          New Game
+        </button>
+        <button className="header__button" onClick={Home}>
+          Log Out
+        </button>
       </div>
     </div>
   );

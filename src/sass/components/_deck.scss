@@ -4,10 +4,10 @@
   justify-content: center;
   gap: 25px;
   row-gap: 10px;
-  width: 500px;
+  max-width: 500px;
 
   &__title {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 
     color: $color-text;
   }
@@ -45,5 +45,16 @@
     font-size: 18px;
     box-shadow: inset -4px -4px 9px #ffffffb3, inset 4px 4px 5px #a6b4c8b3;
     border-radius: 20px;
+
+    @media screen and (max-width: 499px) {
+      width: 40px;
+      height: 60px;
+    }
+
+    @media screen and (min-width: 500px) {
+      &:hover {
+        background-color: $color-teal;
+      }
+    }
   }
 }

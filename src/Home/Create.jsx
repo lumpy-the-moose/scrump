@@ -13,6 +13,7 @@ function Create() {
 
   const dispatch = useDispatch();
   const gameId = useSelector(state => state.auth.gameId.payload);
+  const deckType = useSelector(state => state.auth.deckType.payload);
 
   const toGame = () => {
     let xhttp = new XMLHttpRequest();
@@ -31,7 +32,13 @@ function Create() {
 
     xhttp.open('POST', 'https://scrum-poker.space/scrum/poker/sessions', true);
     xhttp.setRequestHeader('Authorization', cookies['Authorization']);
-    xhttp.send();
+    xhttp.setRequestHeader('Content-type', 'application/json');
+    xhttp.send(
+      JSON.stringify({
+        name: gameId,
+        estimateSetName: deckType,
+      })
+    );
   };
 
   return (

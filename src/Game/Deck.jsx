@@ -18,13 +18,13 @@ function Deck() {
   let exceptions;
 
   switch (deckType ? deckType : cookies.deckType) {
-    case 'mod':
+    case 'MOD':
       exceptions = modExceptions;
       break;
-    case 'fibo':
+    case 'FIBO':
       exceptions = fiboExceptions;
       break;
-    case 'powers':
+    case 'POWERS':
       exceptions = powersExceptions;
       break;
     default:

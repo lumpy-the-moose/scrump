@@ -11,7 +11,7 @@ export const gameSlice = createSlice({
     stageNotifyText: 'Waiting for task',
     deckDisabled: true,
     selectedCard: '',
-    answer: '',
+    answerVisible: false,
   },
   reducers: {
     toVoting: state => {
@@ -29,27 +29,27 @@ export const gameSlice = createSlice({
       state.stageNotifyClasses = 'task__notify task__notify--green';
       state.stageNotifyText = 'Results';
       state.deckDisabled = true;
-      state.selectedCard
-        ? (state.answer = state.selectedCard)
-        : (state.answer = setSelectedCard('?'));
+      if (!state.selectedCard) state.selectedCard = '?';
+      state.answerVisible = true;
     },
 
     toWaiting: state => {
       state.gameStage = 'waiting';
       state.textareaDisabled = false;
-      state.taskMessage = setTaskMessage('');
+      state.taskMessage = '';
       state.stageButtonText = 'Start';
       state.stageNotifyText = 'Waiting for task';
       state.answer = '';
       state.selectedCard = '';
+      state.answerVisible = false;
     },
 
     setTaskMessage: (state, setState) => {
-      state.taskMessage = setState;
+      state.taskMessage = setState.payload;
     },
 
     setSelectedCard: (state, setState) => {
-      state.selectedCard = setState;
+      state.selectedCard = setState.payload;
     },
   },
 });

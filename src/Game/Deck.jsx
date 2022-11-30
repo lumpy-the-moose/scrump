@@ -5,11 +5,9 @@ import { setSelectedCard } from '../App/gameSlice';
 function Deck() {
   const dispatch = useDispatch();
   const setsData = useSelector(state => state.auth.setsData);
-  const deckType = useSelector(state => state.auth.deckType.payload);
+  const deckType = useSelector(state => state.auth.deckType);
   const deckDisabled = useSelector(state => state.game.deckDisabled);
-  const selectedCard = useSelector(state => state.game.selectedCard.payload);
-
-  console.log(setsData[deckType]);
+  const selectedCard = useSelector(state => state.game.selectedCard);
 
   const deckMarkup = setsData[deckType].map(item => (
     <div key={item}>

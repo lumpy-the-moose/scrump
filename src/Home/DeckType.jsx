@@ -10,7 +10,7 @@ function DeckType() {
 
   const dispatch = useDispatch();
   const setsData = useSelector(state => state.auth.setsData);
-  const deckType = useSelector(state => state.auth.deckType.payload);
+  const deckType = useSelector(state => state.auth.deckType);
 
   useEffect(() => {
     async function estimateSets() {

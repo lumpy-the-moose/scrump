@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 function Team() {
   let [cookies] = useCookies();
 
-  const nickname = useSelector(state => state.auth.nickname.payload);
-  const answer = useSelector(state => state.game.answer.payload);
+  const nickname = useSelector(state => state.auth.nickname);
+  const selectedCard = useSelector(state => state.game.selectedCard);
+  const answerVisible = useSelector(state => state.game.answerVisible);
 
   return (
     <>
@@ -13,7 +14,9 @@ function Team() {
       <div className="team">
         <div className="team__user">
           {nickname ? nickname : cookies.nickname}
-          <span className="team__answer">{answer}</span>
+          <span className="team__answer">
+            {answerVisible ? selectedCard : false}
+          </span>
         </div>
       </div>
     </>

@@ -2,22 +2,28 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: { nickname: '', gameId: '', deckType: 'FIBO', pokerSession: '', setsData: {} },
+  initialState: {
+    nickname: '',
+    gameId: '',
+    deckType: 'FIBO',
+    pokerSession: '',
+    setsData: {},
+  },
   reducers: {
     setNickname: (state, setState) => {
-      state.nickname = setState;
+      state.nickname = setState.payload;
     },
 
     setGameId: (state, setState) => {
-      state.gameId = setState;
+      state.gameId = setState.payload;
     },
 
     setPokerSession: (state, setState) => {
-      state.pokerSession = setState;
+      state.pokerSession = setState.payload;
     },
 
     setDeckType: (state, setState) => {
-      state.deckType = setState;
+      state.deckType = setState.payload;
     },
 
     updateSetsData: (state, data) => {
@@ -26,7 +32,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setNickname, setGameId, setPokerSession, setDeckType, updateSetsData } =
-  authSlice.actions;
+export const {
+  setNickname,
+  setGameId,
+  setPokerSession,
+  setDeckType,
+  updateSetsData,
+} = authSlice.actions;
 
 export default authSlice.reducer;

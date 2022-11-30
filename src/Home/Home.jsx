@@ -11,7 +11,7 @@ function Home() {
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const nickname = useSelector(state => state.auth.nickname.payload);
+  const nickname = useSelector(state => state.auth.nickname);
 
   const toCreate = () => {
     let xhttp = new XMLHttpRequest();

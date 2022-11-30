@@ -12,8 +12,8 @@ function Create() {
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const gameId = useSelector(state => state.auth.gameId.payload);
-  const deckType = useSelector(state => state.auth.deckType.payload);
+  const gameId = useSelector(state => state.auth.gameId);
+  const deckType = useSelector(state => state.auth.deckType);
 
   const toGame = () => {
     let xhttp = new XMLHttpRequest();

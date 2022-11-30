@@ -2,14 +2,14 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { setDeckType } from '../App/authSlice';
-import { useEffect, useState } from 'react';
+import { setDeckType, updateSetsData } from '../App/authSlice';
+import { useEffect } from 'react';
 
 function DeckType() {
   let [cookies, setCookie] = useCookies();
-  let [setsData, updateSetsData] = useState({});
 
   const dispatch = useDispatch();
+  const setsData = useSelector(state => state.auth.setsData);
   const deckType = useSelector(state => state.auth.deckType.payload);
 
   useEffect(() => {
@@ -24,7 +24,9 @@ function DeckType() {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-      }).then(r => updateSetsData(r.data.data));
+      }).then(r => {
+        dispatch(updateSetsData({ ...r.data.data }));
+      });
     }
 
     estimateSets();

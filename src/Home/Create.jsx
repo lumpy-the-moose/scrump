@@ -4,6 +4,7 @@ import { ReactComponent as Logo } from '../logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { setGameId, setPokerSession } from '../App/authSlice';
 
@@ -12,33 +13,25 @@ function Create() {
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const gameId = useSelector(state => state.auth.gameId);
-  const deckType = useSelector(state => state.auth.deckType);
+  const { gameId, deckType } = useSelector(state => state.auth);
 
   const toGame = () => {
-    let xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        const response = JSON.parse(this.responseText);
-        if (response.status) {
-          alert(response.message);
-        } else {
-          dispatch(setPokerSession(response.data));
-          navigate('/game');
-        }
-      }
-    };
-
-    xhttp.open('POST', 'https://scrum-poker.space/scrum/poker/sessions', true);
-    xhttp.setRequestHeader('Authorization', cookies['Authorization']);
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send(
-      JSON.stringify({
+    axios('https://scrum-poker.space/scrum/poker/sessions', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+      data: {
         name: gameId,
         estimateSetName: deckType,
-      })
-    );
+      },
+    }).then(r => {
+      dispatch(setPokerSession(r.data.data));
+      navigate('/game');
+    });
   };
 
   return (
@@ -66,7 +59,7 @@ function Create() {
             dispatch(setGameId(e.target.value));
             setCookie('gameId', e.target.value, { path: '/' });
           }}
-          value={gameId ? gameId : cookies.gameId ? cookies.gameId : ''}
+          value={gameId ? gameId : ''}
           autoFocus
         />
         <button

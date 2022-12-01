@@ -3,6 +3,7 @@ import { ReactComponent as Logo } from '../logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { setNickname } from '../App/authSlice';
 
@@ -11,30 +12,29 @@ function Home() {
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const nickname = useSelector(state => state.auth.nickname);
+  const { nickname, pokerSession } = useSelector(state => state.auth);
 
   const toCreate = () => {
-    let xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        const response = JSON.parse(this.responseText);
-        if (response.status) {
-          alert(response.message);
-        } else {
-          setCookie('Authorization', response.data, { path: '/' });
-          navigate('/create');
-        }
+    axios(
+      `https://scrum-poker.space/api/auth/${pokerSession ? 'nickname' : 'login'}`,
+      {
+        method: pokerSession ? 'PATCH' : 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          Authorization: cookies.Authorization,
+        },
+        data: {
+          [pokerSession ? 'name' : 'username']: nickname,
+        },
       }
-    };
-
-    xhttp.open('POST', 'https://scrum-poker.space/api/auth/login', true);
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send(
-      JSON.stringify({
-        username: nickname,
-      })
-    );
+    ).then(r => {
+      if (!pokerSession) {
+        setCookie('Authorization', r.data.data, { path: '/' });
+      }
+      pokerSession ? navigate('/game') : navigate('/create');
+    });
   };
 
   return (
@@ -62,7 +62,7 @@ function Home() {
             dispatch(setNickname(e.target.value));
             setCookie('nickname', e.target.value, { path: '/' });
           }}
-          value={nickname ? nickname : cookies.nickname ? cookies.nickname : ''}
+          value={nickname ? nickname : ''}
           autoFocus
         />
         <button

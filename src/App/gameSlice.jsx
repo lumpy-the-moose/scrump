@@ -12,6 +12,7 @@ export const gameSlice = createSlice({
     deckDisabled: true,
     selectedCard: '',
     answerVisible: false,
+    currentSet: [],
   },
   reducers: {
     toVoting: state => {
@@ -51,10 +52,20 @@ export const gameSlice = createSlice({
     setSelectedCard: (state, setState) => {
       state.selectedCard = setState.payload;
     },
+
+    updateCurrentSet: (state, data) => {
+      state.currentSet = [...data.payload];
+    },
   },
 });
 
-export const { toVoting, toResults, toWaiting, setTaskMessage, setSelectedCard } =
-  gameSlice.actions;
+export const {
+  toVoting,
+  toResults,
+  toWaiting,
+  setTaskMessage,
+  setSelectedCard,
+  updateCurrentSet,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

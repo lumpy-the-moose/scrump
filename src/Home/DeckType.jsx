@@ -1,16 +1,15 @@
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 import { setDeckType, updateSetsData } from '../App/authSlice';
-import { useEffect } from 'react';
 
 function DeckType() {
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const setsData = useSelector(state => state.auth.setsData);
-  const deckType = useSelector(state => state.auth.deckType);
+  const { setsData, deckType } = useSelector(state => state.auth);
 
   useEffect(() => {
     async function estimateSets() {
@@ -22,8 +21,6 @@ function DeckType() {
         headers: {
           Authorization: cookies.Authorization,
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
       }).then(r => {
         dispatch(updateSetsData({ ...r.data.data }));
       });

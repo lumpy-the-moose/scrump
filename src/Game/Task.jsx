@@ -1,27 +1,23 @@
-import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { toVoting, toResults, toWaiting, setTaskMessage } from '../App/gameSlice';
 
 function Task() {
-  let [cookies] = useCookies();
-
   const dispatch = useDispatch();
-  const gameId = useSelector(state => state.auth.gameId);
-  const gameStage = useSelector(state => state.game.gameStage);
-  const textareaDisabled = useSelector(state => state.game.textareaDisabled);
-  const taskMessage = useSelector(state => state.game.taskMessage);
-  const stageButtonText = useSelector(state => state.game.stageButtonText);
-  const stageNotifyClasses = useSelector(state => state.game.stageNotifyClasses);
-  const stageNotifyText = useSelector(state => state.game.stageNotifyText);
+  const { gameId } = useSelector(state => state.auth);
+  const {
+    gameStage,
+    textareaDisabled,
+    taskMessage,
+    stageButtonText,
+    stageNotifyClasses,
+    stageNotifyText,
+  } = useSelector(state => state.game);
 
   return (
     <>
       <h1 className="task__title">
-        Game{' '}
-        <span className="task__title--accent">
-          {gameId ? gameId : cookies.gameId}
-        </span>
+        Game <span className="task__title--accent">{gameId}</span>
       </h1>
       <div className="task">
         <textarea

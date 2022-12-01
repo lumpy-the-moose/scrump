@@ -27,7 +27,7 @@ export const authSlice = createSlice({
     },
 
     updateSetsData: (state, data) => {
-      state.setsData = { ...state.setsData, ...data.payload };
+      state.setsData = { ...data.payload };
     },
   },
 });

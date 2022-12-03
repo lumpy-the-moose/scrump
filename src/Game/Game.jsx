@@ -3,13 +3,16 @@ import Task from './Task';
 import Team from './Team';
 import Deck from './Deck';
 
+import React from 'react';
+import SockJsClient from 'react-stomp';
+
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 
-import { setGameId, setNickname } from '../App/authSlice';
-import { updateCurrentSet } from '../App/gameSlice';
+import { setPokerSession, setGameId, setNickname } from '../App/authSlice';
+import { updateActiveUsers, updateCurrentSet } from '../App/gameSlice';
 
 function Game() {
   let [cookies] = useCookies();
@@ -18,9 +21,7 @@ function Game() {
   const { pokerSession } = useSelector(state => state.auth);
 
   useEffect(() => {
-    console.log(pokerSession);
-
-    async function getGameData() {
+    async function refreshGameData() {
       axios(`https://scrum-poker.space/scrum/poker/sessions/${pokerSession.id}`, {
         method: 'GET',
         mode: 'cors',
@@ -30,18 +31,30 @@ function Game() {
           Authorization: cookies.Authorization,
         },
       }).then(r => {
+        console.log(r.data.data);
+
+        dispatch(setPokerSession(r.data.data));
         dispatch(setGameId(r.data.data.name));
-        dispatch(setNickname(r.data.data.users[0].nickname));
+        dispatch(updateActiveUsers(r.data.data.users));
         dispatch(updateCurrentSet(r.data.data.estimates));
       });
     }
 
-    getGameData();
+    refreshGameData();
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
+      <SockJsClient
+        url="https://scrum-poker.space/scrum/poker/ws"
+        topics={['/poker/' + pokerSession.id]}
+        headers={{ Authorization: cookies.Authorization }}
+        subscribeHeaders={{ Authorization: cookies.Authorization }}
+        onMessage={msg => {
+          console.log(msg);
+        }}
+      />
       <Header />
       <Task />
       <Team />

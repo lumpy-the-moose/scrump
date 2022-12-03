@@ -1,8 +1,12 @@
+import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { toVoting, toResults, toWaiting, setTaskMessage } from '../App/gameSlice';
 
 function Task() {
+  let [cookies] = useCookies();
+
   const dispatch = useDispatch();
   const { gameId } = useSelector(state => state.auth);
   const {
@@ -12,7 +16,57 @@ function Task() {
     stageButtonText,
     stageNotifyClasses,
     stageNotifyText,
+    selectedCard,
   } = useSelector(state => state.game);
+
+  const toggleEstimationProgress = () => {
+    axios('https://scrum-poker.space/scrum/poker/sessions/estimationToggle', {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+    }).then(r => {
+      console.log('estimatingInProgress', r.data.data.estimatingInProgress);
+    });
+  };
+
+  const changeSessionDescription = () => {
+    axios('https://scrum-poker.space/scrum/poker/sessions/description', {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+      data: {
+        description: taskMessage,
+      },
+    }).then(r => {
+      console.log('taskDescription', r.data.data.taskDescription);
+    });
+  };
+
+  const estimate = () => {
+    axios('https://scrum-poker.space/scrum/poker/sessions/estimate', {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+      data: {
+        estimate: selectedCard ? selectedCard : '?',
+      },
+    }).then(r => {
+      console.log('estimate', r.data.data.users[0].estimate);
+      return r.data.data.users[0].estimate;
+    });
+  };
 
   return (
     <>
@@ -34,16 +88,20 @@ function Task() {
             type="button"
             className="task__button"
             disabled={!taskMessage}
-            onClick={e => {
+            onClick={async e => {
               // eslint-disable-next-line
               switch (gameStage) {
                 case 'waiting':
+                  toggleEstimationProgress();
+                  changeSessionDescription();
                   dispatch(toVoting());
                   break;
                 case 'voting':
+                  estimate();
                   dispatch(toResults());
                   break;
                 case 'results':
+                  toggleEstimationProgress();
                   dispatch(toWaiting());
               }
             }}

@@ -8,6 +8,7 @@ export const authSlice = createSlice({
     deckType: 'FIBO',
     pokerSession: '',
     setsData: {},
+    isAdmin: false,
   },
   reducers: {
     setNickname: (state, setState) => {
@@ -29,6 +30,10 @@ export const authSlice = createSlice({
     updateSetsData: (state, data) => {
       state.setsData = { ...data.payload };
     },
+
+    setIsAdmin: (state, data) => {
+      state.isAdmin = data.payload;
+    },
   },
 });
 
@@ -38,6 +43,7 @@ export const {
   setPokerSession,
   setDeckType,
   updateSetsData,
+  setIsAdmin,
 } = authSlice.actions;
 
 export default authSlice.reducer;

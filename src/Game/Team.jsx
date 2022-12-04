@@ -1,9 +1,7 @@
 import { useSelector } from 'react-redux';
 
 function Team() {
-  const { activeUsers, answerVisible, selectedCard } = useSelector(
-    state => state.game
-  );
+  const { activeUsers, answerVisible } = useSelector(state => state.game);
 
   const teamMarkup = activeUsers.map(({ nickname, estimate }) => (
     <div className="team__user" key="nickname">

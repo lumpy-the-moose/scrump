@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { setGameId, setPokerSession } from '../App/authSlice';
+import { setGameId } from '../App/authSlice';
 
 function Create() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function Create() {
   const dispatch = useDispatch();
   const { gameId, deckType } = useSelector(state => state.auth);
 
-  const toGame = () => {
+  const newGame = () => {
     axios('https://scrum-poker.space/scrum/poker/sessions', {
       method: 'POST',
       mode: 'cors',
@@ -29,7 +29,7 @@ function Create() {
         estimateSetName: deckType,
       },
     }).then(r => {
-      dispatch(setPokerSession(r.data.data));
+      setCookie('PokerSession', r.data.data.id, { path: '/' });
       navigate('/game');
     });
   };
@@ -47,7 +47,7 @@ function Create() {
         onSubmit={e => {
           e.preventDefault();
           if (gameId) {
-            toGame();
+            newGame();
           }
         }}
       >
@@ -59,13 +59,12 @@ function Create() {
             dispatch(setGameId(e.target.value));
             setCookie('gameId', e.target.value, { path: '/' });
           }}
-          value={gameId ? gameId : ''}
           autoFocus
         />
         <button
           type="button"
           className="create__button"
-          onClick={toGame}
+          onClick={newGame}
           disabled={!gameId && !cookies.gameId}
         >
           Enter

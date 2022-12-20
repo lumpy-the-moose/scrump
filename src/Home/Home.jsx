@@ -1,6 +1,6 @@
 import { ReactComponent as Logo } from '../logo.svg';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -9,31 +9,51 @@ import { setNickname } from '../App/authSlice';
 
 function Home() {
   const navigate = useNavigate();
+  const location = useLocation();
   let [cookies, setCookie] = useCookies();
 
   const dispatch = useDispatch();
-  const { nickname, pokerSession } = useSelector(state => state.auth);
+  const { nickname } = useSelector(state => state.auth);
 
-  const toCreate = () => {
-    axios(
-      `https://scrum-poker.space/api/auth/${pokerSession ? 'nickname' : 'login'}`,
-      {
-        method: pokerSession ? 'PATCH' : 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          Authorization: cookies.Authorization,
-        },
-        data: {
-          [pokerSession ? 'name' : 'username']: nickname,
-        },
+  const logIn = () => {
+    axios(`https://scrum-poker.space/api/auth/login`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+      data: {
+        username: nickname,
+      },
+    }).then(r => {
+      setCookie('Authorization', r.data.data, { path: '/' });
+
+      if (location.pathname !== '/') {
+        joinGame(r.data.data);
+      } else {
+        navigate('/create');
       }
-    ).then(r => {
-      if (!pokerSession) {
-        setCookie('Authorization', r.data.data, { path: '/' });
-      }
-      pokerSession ? navigate('/game') : navigate('/create');
+    });
+  };
+
+  const joinGame = Authorization => {
+    axios(`https://scrum-poker.space/scrum/poker/sessions${location.pathname}`, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Authorization,
+      },
+      data: {
+        username: nickname,
+      },
+    }).then(r => {
+      console.log(r.data.data);
+      setCookie('PokerSession', r.data.data.id, { path: '/' });
+      navigate('/game');
     });
   };
 
@@ -50,7 +70,7 @@ function Home() {
         onSubmit={e => {
           e.preventDefault();
           if (nickname) {
-            toCreate();
+            logIn();
           }
         }}
       >
@@ -68,7 +88,7 @@ function Home() {
         <button
           type="button"
           className="home__button"
-          onClick={toCreate}
+          onClick={logIn}
           disabled={!nickname && !cookies.nickname}
         >
           Join

@@ -2,13 +2,20 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { toVoting, toResults, toWaiting, setTaskMessage } from '../App/gameSlice';
+import {
+  toVoting,
+  toResults,
+  toWaiting,
+  setTaskMessage,
+  setSelectedCard,
+  updateActiveUsers,
+} from '../App/gameSlice';
 
 function Task() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
-  const { gameId } = useSelector(state => state.auth);
+  const { gameId, isAdmin } = useSelector(state => state.auth);
   const {
     gameStage,
     textareaDisabled,
@@ -62,10 +69,15 @@ function Task() {
       data: {
         estimate: selectedCard ? selectedCard : '?',
       },
-    }).then(r => {
-      console.log('estimate', r.data.data.users[0].estimate);
-      return r.data.data.users[0].estimate;
-    });
+    })
+      .then(r => {
+        console.log('estimate', r.data.data.users[0].estimate);
+        dispatch(setSelectedCard(r.data.data.users[0].estimate));
+        dispatch(updateActiveUsers(r.data.data.users));
+      })
+      .then(r => {
+        dispatch(toResults());
+      });
   };
 
   return (
@@ -79,7 +91,7 @@ function Task() {
           rows="5"
           placeholder="Describe your task"
           autoFocus
-          disabled={textareaDisabled}
+          disabled={!isAdmin || textareaDisabled}
           onInput={e => dispatch(setTaskMessage(e.target.value))}
           value={taskMessage}
         ></textarea>
@@ -88,7 +100,8 @@ function Task() {
             type="button"
             className="task__button"
             disabled={!taskMessage}
-            onClick={async e => {
+            style={{ display: isAdmin ? 'block' : 'none' }}
+            onClick={e => {
               // eslint-disable-next-line
               switch (gameStage) {
                 case 'waiting':
@@ -98,7 +111,6 @@ function Task() {
                   break;
                 case 'voting':
                   estimate();
-                  dispatch(toResults());
                   break;
                 case 'results':
                   toggleEstimationProgress();

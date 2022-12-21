@@ -7,8 +7,5 @@
     "main.7425d3b8.css.map": "/scrump/static/css/main.7425d3b8.css.map",
     "main.6f44a51b.js.map": "/scrump/static/js/main.6f44a51b.js.map"
   },
-  "entrypoints": [
-    "static/css/main.7425d3b8.css",
-    "static/js/main.6f44a51b.js"
-  ]
+  "entrypoints": ["static/css/main.7425d3b8.css", "static/js/main.6f44a51b.js"]
 }

@@ -15,7 +15,7 @@ function Task() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
-  const { gameId, isAdmin } = useSelector(state => state.auth);
+  const { gameName, isAdmin } = useSelector(state => state.auth);
   const {
     gameStage,
     textareaDisabled,
@@ -75,7 +75,7 @@ function Task() {
         dispatch(setSelectedCard(r.data.data.users[0].estimate));
         dispatch(updateActiveUsers(r.data.data.users));
       })
-      .then(r => {
+      .then(() => {
         dispatch(toResults());
       });
   };
@@ -83,7 +83,7 @@ function Task() {
   return (
     <>
       <h1 className="task__title">
-        Game <span className="task__title--accent">{gameId}</span>
+        Game <span className="task__title--accent">{gameName}</span>
       </h1>
       <div className="task">
         <textarea
@@ -101,7 +101,7 @@ function Task() {
             className="task__button"
             disabled={!taskMessage}
             style={{ display: isAdmin ? 'block' : 'none' }}
-            onClick={e => {
+            onClick={() => {
               // eslint-disable-next-line
               switch (gameStage) {
                 case 'waiting':

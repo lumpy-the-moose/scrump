@@ -4,7 +4,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     nickname: '',
-    gameId: '',
+    gameName: '',
     deckType: 'FIBO',
     setsData: {},
     isAdmin: false,
@@ -14,8 +14,8 @@ export const authSlice = createSlice({
       state.nickname = setState.payload;
     },
 
-    setGameId: (state, setState) => {
-      state.gameId = setState.payload;
+    setGameName: (state, setState) => {
+      state.gameName = setState.payload;
     },
 
     setDeckType: (state, setState) => {
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setNickname, setGameId, setDeckType, updateSetsData, setIsAdmin } =
+export const { setNickname, setGameName, setDeckType, updateSetsData, setIsAdmin } =
   authSlice.actions;
 
 export default authSlice.reducer;

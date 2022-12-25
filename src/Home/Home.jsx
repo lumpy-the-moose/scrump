@@ -51,7 +51,6 @@ function Home() {
         username: nickname,
       },
     }).then(r => {
-      console.log(r.data.data);
       setCookie('PokerSession', r.data.data.id, { path: '/' });
       navigate('/game');
     });
@@ -82,14 +81,14 @@ function Home() {
             dispatch(setNickname(e.target.value));
             setCookie('nickname', e.target.value, { path: '/' });
           }}
-          value={nickname ? nickname : ''}
+          value={nickname}
           autoFocus
         />
         <button
           type="button"
           className="home__button"
           onClick={logIn}
-          disabled={!nickname && !cookies.nickname}
+          disabled={!nickname}
         >
           Join
         </button>

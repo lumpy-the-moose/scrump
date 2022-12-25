@@ -1,20 +1,27 @@
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import { setNickname, setGameName } from '../App/authSlice';
+
 function Header() {
-  let [cookies, setCookie] = useCookies();
+  let [cookies] = useCookies();
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const Create = () => {
-    navigate('/create');
-    setCookie('gameId', '', { path: '/' });
     closeSession();
+    dispatch(setGameName(''));
+    navigate('/create');
   };
 
   const Home = () => {
+    dispatch(setNickname(''));
+    dispatch(setGameName(''));
     navigate('/');
   };
 

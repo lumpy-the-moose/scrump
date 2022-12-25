@@ -6,7 +6,7 @@ import axios from 'axios';
 import { setDeckType, updateSetsData } from '../App/authSlice';
 
 function DeckType() {
-  let [cookies, setCookie] = useCookies();
+  let [cookies] = useCookies();
 
   const dispatch = useDispatch();
   const { setsData, deckType } = useSelector(state => state.auth);
@@ -47,7 +47,6 @@ function DeckType() {
         }
         onChange={e => {
           dispatch(setDeckType(e.target.value));
-          setCookie('deckType', e.target.value, { path: '/' });
         }}
       />
       <label htmlFor={item[0]} className="deck-type__label">

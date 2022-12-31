@@ -16,8 +16,7 @@ export default function Refresh() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(cookies.PokerSession);
+  const fetchPokerSession = () => {
     axios(`https://scrum-poker.space/scrum/poker/sessions/${cookies.PokerSession}`, {
       method: 'GET',
       mode: 'cors',
@@ -43,7 +42,15 @@ export default function Refresh() {
         dispatch(toVoting());
       }
     });
+  };
 
+  useEffect(() => {
+    fetchPokerSession();
+    const interval = setInterval(fetchPokerSession, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
     // eslint-disable-next-line
   }, []);
 }

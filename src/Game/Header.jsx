@@ -1,7 +1,7 @@
 import { ReactComponent as Logo } from '../logo.svg';
 
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,6 +12,7 @@ function Header() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const { isAdmin } = useSelector(state => state.auth);
 
   const Create = () => {
     closeSession();
@@ -20,6 +21,7 @@ function Header() {
   };
 
   const Home = () => {
+    if (isAdmin) closeSession();
     dispatch(setNickname(''));
     dispatch(setGameName(''));
     navigate('/');

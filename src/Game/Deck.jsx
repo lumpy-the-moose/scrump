@@ -17,8 +17,8 @@ function Deck() {
         value={item}
         className="deck__input"
         disabled={deckDisabled}
-        checked={item === selectedCard}
         onChange={e => dispatch(setSelectedCard(e.target.value))}
+        checked={item === selectedCard}
       />
       <label htmlFor={item} className="deck__label">
         {item}

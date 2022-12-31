@@ -4,12 +4,14 @@ import Team from './Team';
 import Deck from './Deck';
 import Refresh from '../App/Refresh';
 
-import React from 'react';
+import { useSelector } from 'react-redux';
 
 function Game() {
+  const { refreshing } = useSelector(state => state.game);
+
   return (
     <>
-      <Refresh />
+      {refreshing ? <Refresh /> : false}
       <Header />
       <Task />
       <Team />

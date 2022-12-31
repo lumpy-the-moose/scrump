@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
+    refreshing: true,
     gameStage: 'waiting',
     textareaDisabled: false,
     taskMessage: '',
@@ -46,6 +47,10 @@ export const gameSlice = createSlice({
       state.answerVisible = false;
     },
 
+    setRefreshing: (state, setState) => {
+      state.refreshing = setState.payload;
+    },
+
     setTaskMessage: (state, setState) => {
       state.taskMessage = setState.payload;
     },
@@ -68,6 +73,7 @@ export const {
   toVoting,
   toResults,
   toWaiting,
+  setRefreshing,
   setTaskMessage,
   setSelectedCard,
   updateActiveUsers,

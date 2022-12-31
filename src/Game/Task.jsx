@@ -6,6 +6,7 @@ import {
   toVoting,
   toResults,
   toWaiting,
+  setRefreshing,
   setTaskMessage,
   setSelectedCard,
   updateActiveUsers,
@@ -40,7 +41,7 @@ function Task() {
     });
   };
 
-  const changeSessionDescription = () => {
+  const changeSessionDescription = description => {
     axios('https://scrum-poker.space/scrum/poker/sessions/description', {
       method: 'PATCH',
       mode: 'cors',
@@ -50,7 +51,7 @@ function Task() {
         Authorization: cookies.Authorization,
       },
       data: {
-        description: taskMessage,
+        description,
       },
     }).then(r => {
       console.log('taskDescription', r.data.data.taskDescription);
@@ -72,7 +73,12 @@ function Task() {
     })
       .then(r => {
         console.log('estimate', r.data.data.users[0].estimate);
-        dispatch(setSelectedCard(r.data.data.users[0].estimate));
+        dispatch(
+          setSelectedCard(
+            r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
+              .estimate
+          )
+        );
         dispatch(updateActiveUsers(r.data.data.users));
       })
       .then(() => {
@@ -93,6 +99,7 @@ function Task() {
           autoFocus
           disabled={!isAdmin || textareaDisabled}
           onInput={e => dispatch(setTaskMessage(e.target.value))}
+          onFocus={() => dispatch(setRefreshing(false))}
           value={taskMessage}
         ></textarea>
         <div className="task__manage">
@@ -106,15 +113,19 @@ function Task() {
               switch (gameStage) {
                 case 'waiting':
                   toggleEstimationProgress();
-                  changeSessionDescription();
+                  changeSessionDescription(taskMessage);
                   dispatch(toVoting());
+                  dispatch(setRefreshing(true));
                   break;
                 case 'voting':
+                  dispatch(setRefreshing(false));
                   estimate();
                   break;
                 case 'results':
                   toggleEstimationProgress();
+                  changeSessionDescription('');
                   dispatch(toWaiting());
+                  dispatch(setRefreshing(true));
               }
             }}
           >

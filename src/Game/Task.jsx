@@ -2,6 +2,11 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
+import { FaLink } from 'react-icons/fa';
+import { IconContext } from 'react-icons';
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
+
 import {
   toVoting,
   toResults,
@@ -58,8 +63,8 @@ function Task() {
     });
   };
 
-  const estimate = () => {
-    axios('https://scrum-poker.space/scrum/poker/sessions/estimate', {
+  const estimate = async () => {
+    return axios('https://scrum-poker.space/scrum/poker/sessions/estimate', {
       method: 'PATCH',
       mode: 'cors',
       cache: 'no-cache',
@@ -70,27 +75,39 @@ function Task() {
       data: {
         estimate: selectedCard ? selectedCard : '?',
       },
-    })
-      .then(r => {
-        console.log('estimate', r.data.data.users[0].estimate);
-        dispatch(
-          setSelectedCard(
-            r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
-              .estimate
-          )
-        );
-        dispatch(updateActiveUsers(r.data.data.users));
-      })
-      .then(() => {
-        dispatch(toResults());
-      });
+    }).then(r => {
+      console.log('estimate', r.data.data.users[0].estimate);
+      dispatch(
+        setSelectedCard(
+          r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
+            .estimate
+        )
+      );
+      dispatch(updateActiveUsers(r.data.data.users));
+    });
   };
 
   return (
     <>
-      <h1 className="task__title">
-        Game <span className="task__title--accent">{gameName}</span>
-      </h1>
+      <div className="task__header">
+        <h1 className="task__title">
+          Game <span className="task__title--accent">{gameName}</span>
+        </h1>
+        <div
+          id="taskLink"
+          onClick={() => {
+            navigator.clipboard.writeText(
+              window.location.href.slice(0, -4) + cookies.PokerSession
+            );
+            console.log(window.location.href.slice(0, -4) + cookies.PokerSession);
+          }}
+        >
+          <IconContext.Provider value={{ className: 'task__link' }}>
+            <FaLink />
+          </IconContext.Provider>
+        </div>
+        <Tooltip anchorId="taskLink" content="Copy Game Link" place="top" />
+      </div>
       <div className="task">
         <textarea
           className="task__field"
@@ -118,14 +135,16 @@ function Task() {
                   dispatch(setRefreshing(true));
                   break;
                 case 'voting':
-                  dispatch(setRefreshing(false));
-                  estimate();
+                  estimate().then(() => {
+                    toggleEstimationProgress();
+                    dispatch(toResults());
+                  });
                   break;
                 case 'results':
-                  toggleEstimationProgress();
-                  changeSessionDescription('');
+                  changeSessionDescription(false);
                   dispatch(toWaiting());
                   dispatch(setRefreshing(true));
+                  break;
               }
             }}
           >

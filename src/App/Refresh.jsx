@@ -1,20 +1,23 @@
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 
 import { setGameName, setIsAdmin } from './authSlice';
 import {
   setTaskMessage,
+  setSelectedCard,
   updateActiveUsers,
   updateCurrentSet,
   toVoting,
+  toResults,
 } from './gameSlice';
 
 export default function Refresh() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
+  const { selectedCard } = useSelector(state => state.game);
 
   const fetchPokerSession = () => {
     axios(`https://scrum-poker.space/scrum/poker/sessions/${cookies.PokerSession}`, {
@@ -29,7 +32,13 @@ export default function Refresh() {
       console.log(r.data.data);
 
       dispatch(setGameName(r.data.data.name));
-      dispatch(setTaskMessage(r.data.data.taskDescription || ''));
+      dispatch(
+        setTaskMessage(
+          r.data.data.taskDescription && r.data.data.taskDescription !== 'false'
+            ? r.data.data.taskDescription
+            : ''
+        )
+      );
       dispatch(updateActiveUsers(r.data.data.users));
       dispatch(updateCurrentSet(r.data.data.estimates));
       dispatch(
@@ -40,6 +49,21 @@ export default function Refresh() {
       );
       if (r.data.data.estimatingInProgress) {
         dispatch(toVoting());
+      }
+      if (
+        !r.data.data.estimatingInProgress &&
+        r.data.data.taskDescription !== null &&
+        r.data.data.taskDescription !== 'false'
+      ) {
+        console.log('res');
+        dispatch(toResults());
+        if (!selectedCard)
+          dispatch(
+            setSelectedCard(
+              r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
+                .estimate
+            )
+          );
       }
     });
   };

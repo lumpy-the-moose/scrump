@@ -11,6 +11,7 @@ import {
   updateCurrentSet,
   toVoting,
   toResults,
+  toWaiting,
 } from './gameSlice';
 
 export default function Refresh() {
@@ -47,23 +48,33 @@ export default function Refresh() {
             cookies.nickname
         )
       );
+
+      if (!selectedCard) {
+        dispatch(
+          setSelectedCard(
+            r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
+              .estimate
+          )
+        );
+      }
+
       if (r.data.data.estimatingInProgress) {
         dispatch(toVoting());
       }
+
       if (
         !r.data.data.estimatingInProgress &&
         r.data.data.taskDescription !== null &&
         r.data.data.taskDescription !== 'false'
       ) {
-        console.log('res');
+        console.log('results');
         dispatch(toResults());
-        if (!selectedCard)
-          dispatch(
-            setSelectedCard(
-              r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
-                .estimate
-            )
-          );
+        return;
+      }
+
+      if (!r.data.data.estimatingInProgress) {
+        console.log('waiting');
+        dispatch(toWaiting());
       }
     });
   };

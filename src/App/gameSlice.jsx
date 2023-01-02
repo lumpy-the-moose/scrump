@@ -32,7 +32,6 @@ export const gameSlice = createSlice({
       state.stageNotifyClasses = 'task__notify task__notify--green';
       state.stageNotifyText = 'Results';
       state.deckDisabled = true;
-      if (!state.selectedCard) state.selectedCard = '?';
       state.answerVisible = true;
     },
 
@@ -41,6 +40,7 @@ export const gameSlice = createSlice({
       state.textareaDisabled = false;
       state.taskMessage = '';
       state.stageButtonText = 'Start';
+      state.stageNotifyClasses = 'task__notify';
       state.stageNotifyText = 'Waiting for task';
       state.answer = '';
       state.selectedCard = '';

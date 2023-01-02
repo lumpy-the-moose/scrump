@@ -13,8 +13,6 @@ import {
   toWaiting,
   setRefreshing,
   setTaskMessage,
-  setSelectedCard,
-  updateActiveUsers,
 } from '../App/gameSlice';
 
 function Task() {
@@ -29,7 +27,6 @@ function Task() {
     stageButtonText,
     stageNotifyClasses,
     stageNotifyText,
-    selectedCard,
   } = useSelector(state => state.game);
 
   const toggleEstimationProgress = () => {
@@ -60,30 +57,6 @@ function Task() {
       },
     }).then(r => {
       console.log('taskDescription', r.data.data.taskDescription);
-    });
-  };
-
-  const estimate = async () => {
-    return axios('https://scrum-poker.space/scrum/poker/sessions/estimate', {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        Authorization: cookies.Authorization,
-      },
-      data: {
-        estimate: selectedCard ? selectedCard : '?',
-      },
-    }).then(r => {
-      console.log('estimate', r.data.data.users[0].estimate);
-      dispatch(
-        setSelectedCard(
-          r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
-            .estimate
-        )
-      );
-      dispatch(updateActiveUsers(r.data.data.users));
     });
   };
 
@@ -135,15 +108,12 @@ function Task() {
                   dispatch(setRefreshing(true));
                   break;
                 case 'voting':
-                  estimate().then(() => {
-                    toggleEstimationProgress();
-                    dispatch(toResults());
-                  });
+                  toggleEstimationProgress();
+                  dispatch(toResults());
                   break;
                 case 'results':
                   changeSessionDescription(false);
                   dispatch(toWaiting());
-                  dispatch(setRefreshing(true));
                   break;
               }
             }}

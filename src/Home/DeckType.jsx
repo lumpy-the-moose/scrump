@@ -5,7 +5,16 @@ import axios from 'axios';
 
 import { setDeckType, updateSetsData } from '../App/authSlice';
 
-function DeckType() {
+import {
+  StyledDeckType,
+  DeckTypeWrapper,
+  DeckTypeInput,
+  DeckTypeLabel,
+  CustomLabel,
+  CustomDot,
+} from '../Styled/DeckType.styled';
+
+export default function DeckType() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
@@ -31,13 +40,12 @@ function DeckType() {
   }, []);
 
   const setsMarkup = Object.entries(setsData).map((item, index) => (
-    <div className="deck-type__box" key={item[0]}>
-      <input
+    <DeckTypeWrapper key={item[0]}>
+      <DeckTypeInput
         type="radio"
         name="set"
         id={item[0]}
         value={item[0]}
-        className="deck-type__input"
         checked={
           deckType
             ? item[0] === deckType
@@ -49,21 +57,21 @@ function DeckType() {
           dispatch(setDeckType(e.target.value));
         }}
       />
-      <label htmlFor={item[0]} className="deck-type__label">
-        {item[1].join(' ')}
-      </label>
-      <div className="deck-type__custom-input">
-        <div className="deck-type__custom-dot"></div>
-      </div>
-    </div>
+      <DeckTypeLabel htmlFor={item[0]}>{item[1].join(' ')}</DeckTypeLabel>
+      <CustomLabel>
+        <CustomDot />
+      </CustomLabel>
+    </DeckTypeWrapper>
   ));
 
+  const Sets = ({ children }) => {
+    return <StyledDeckType>{children}</StyledDeckType>;
+  };
+
   return (
-    <div className="deck-type">
+    <Sets>
       Choose Deck
       {setsMarkup}
-    </div>
+    </Sets>
   );
 }
-
-export default DeckType;

@@ -1,21 +1,21 @@
 import { useSelector } from 'react-redux';
 
-function Team() {
+import { StyledTeam, TeamTitle, User, Answer } from '../Styled/Team.styled';
+
+export default function Team() {
   const { activeUsers, answerVisible } = useSelector(state => state.game);
 
   const teamMarkup = activeUsers.map(({ nickname, estimate }) => (
-    <div className="team__user" key={nickname}>
+    <User key={nickname}>
       {nickname}
-      <span className="team__answer">{answerVisible ? estimate : false}</span>
-    </div>
+      <Answer>{answerVisible ? estimate : false}</Answer>
+    </User>
   ));
 
   return (
     <>
-      <h2 className="team__title">Team</h2>
-      <div className="team">{teamMarkup}</div>
+      <TeamTitle>Team</TeamTitle>
+      <StyledTeam>{teamMarkup}</StyledTeam>
     </>
   );
 }
-
-export default Team;

@@ -1,5 +1,4 @@
 import DeckType from './DeckType';
-import { ReactComponent as Logo } from '../logo.svg';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -8,7 +7,10 @@ import axios from 'axios';
 
 import { setGameName } from '../App/authSlice';
 
-function Create() {
+import LogoElement from '../Common/LogoElement';
+import { Form, Input, Button } from '../Common/FormElements';
+
+export default function Create() {
   const navigate = useNavigate();
   let [cookies, setCookie] = useCookies();
 
@@ -36,14 +38,8 @@ function Create() {
 
   return (
     <>
-      <div className="header">
-        <div className="logo">
-          <Logo />
-          |ScrumP| <br /> |Planning Poker|
-        </div>
-      </div>
-      <form
-        className="create__form"
+      <LogoElement />
+      <Form
         onSubmit={e => {
           e.preventDefault();
           if (gameName) {
@@ -51,27 +47,21 @@ function Create() {
           }
         }}
       >
-        <input
-          type="text"
+        <Input
           placeholder="Game#"
-          className="create__field"
           onChange={e => {
             dispatch(setGameName(e.target.value));
           }}
-          autoFocus
         />
-        <button
-          type="button"
-          className="create__button"
+        <Button
           onClick={newGame}
           disabled={!gameName}
-        >
-          Enter
-        </button>
-        <DeckType />
-      </form>
+          text={'Enter'}
+          width={'150px'}
+          height={'45px'}
+        />
+      </Form>
+      <DeckType />
     </>
   );
 }
-
-export default Create;

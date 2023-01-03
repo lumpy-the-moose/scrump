@@ -4,7 +4,9 @@ import axios from 'axios';
 
 import { setSelectedCard, updateActiveUsers } from '../App/gameSlice';
 
-function Deck() {
+import { StyledDeck, DeckTitle, DeckInput, DeckLabel } from '../Styled/Deck.styled';
+
+export default function Deck() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
@@ -34,12 +36,11 @@ function Deck() {
 
   const deckMarkup = currentSet.map(item => (
     <div key={item}>
-      <input
+      <DeckInput
         type="radio"
         name="card"
         id={item}
         value={item}
-        className="deck__input"
         disabled={deckDisabled}
         onChange={e => {
           estimate(e.target.value);
@@ -47,18 +48,14 @@ function Deck() {
         }}
         checked={item === selectedCard}
       />
-      <label htmlFor={item} className="deck__label">
-        {item}
-      </label>
+      <DeckLabel htmlFor={item}>{item}</DeckLabel>
     </div>
   ));
 
   return (
     <>
-      <h2 className="deck__title">Pick Your Card</h2>
-      <form className="deck">{deckMarkup}</form>
+      <DeckTitle>Pick Your Card</DeckTitle>
+      <StyledDeck>{deckMarkup}</StyledDeck>
     </>
   );
 }
-
-export default Deck;

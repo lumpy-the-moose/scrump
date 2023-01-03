@@ -2,11 +2,6 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { FaLink } from 'react-icons/fa';
-import { IconContext } from 'react-icons';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css';
-
 import {
   toVoting,
   toResults,
@@ -15,17 +10,24 @@ import {
   setTaskMessage,
 } from '../App/gameSlice';
 
-function Task() {
+import {
+  StyledTask,
+  TaskDescription,
+  TaskManage,
+  TaskNotify,
+} from '../Styled/Task.styled';
+import { Button } from '../Common/FormElements';
+
+export default function Task() {
   let [cookies] = useCookies();
 
   const dispatch = useDispatch();
-  const { gameName, isAdmin } = useSelector(state => state.auth);
+  const { isAdmin } = useSelector(state => state.auth);
   const {
     gameStage,
     textareaDisabled,
     taskMessage,
     stageButtonText,
-    stageNotifyClasses,
     stageNotifyText,
   } = useSelector(state => state.game);
 
@@ -62,28 +64,8 @@ function Task() {
 
   return (
     <>
-      <div className="task__header">
-        <h1 className="task__title">
-          Game <span className="task__title--accent">{gameName}</span>
-        </h1>
-        <div
-          id="taskLink"
-          onClick={() => {
-            navigator.clipboard.writeText(
-              window.location.href.slice(0, -4) + cookies.PokerSession
-            );
-            console.log(window.location.href.slice(0, -4) + cookies.PokerSession);
-          }}
-        >
-          <IconContext.Provider value={{ className: 'task__link' }}>
-            <FaLink />
-          </IconContext.Provider>
-        </div>
-        <Tooltip anchorId="taskLink" content="Copy Game Link" place="top" />
-      </div>
-      <div className="task">
-        <textarea
-          className="task__field"
+      <StyledTask>
+        <TaskDescription
           rows="5"
           placeholder="Describe your task"
           autoFocus
@@ -91,13 +73,9 @@ function Task() {
           onInput={e => dispatch(setTaskMessage(e.target.value))}
           onFocus={() => dispatch(setRefreshing(false))}
           value={taskMessage}
-        ></textarea>
-        <div className="task__manage">
-          <button
-            type="button"
-            className="task__button"
-            disabled={!taskMessage}
-            style={{ display: isAdmin ? 'block' : 'none' }}
+        ></TaskDescription>
+        <TaskManage>
+          <Button
             onClick={() => {
               // eslint-disable-next-line
               switch (gameStage) {
@@ -117,14 +95,16 @@ function Task() {
                   break;
               }
             }}
-          >
-            {stageButtonText}
-          </button>
-          <div className={stageNotifyClasses}>{stageNotifyText}</div>
-        </div>
-      </div>
+            disabled={!taskMessage}
+            text={stageButtonText}
+            display={isAdmin ? 'block' : 'none'}
+            width={'180px'}
+            height={'45px'}
+            mobileWidth={'140px'}
+          />
+          <TaskNotify gameStage={gameStage}>{stageNotifyText}</TaskNotify>
+        </TaskManage>
+      </StyledTask>
     </>
   );
 }
-
-export default Task;

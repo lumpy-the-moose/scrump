@@ -26,18 +26,17 @@
               return s.replace(/~and~/g, '&');
             })
             .join('?');
-          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
         }
       })(window.location);
     </script>
     <title>ScrumP | Planning Poker</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div class="container">
-      <div class="container--decorative">
-        <div id="root"></div>
-      </div>
-    </div>
+    <div id="root"></div>
   </body>
 </html>

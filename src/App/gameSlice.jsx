@@ -8,7 +8,6 @@ export const gameSlice = createSlice({
     textareaDisabled: false,
     taskMessage: '',
     stageButtonText: 'Start',
-    stageNotifyClasses: 'task__notify',
     stageNotifyText: 'Waiting for task',
     deckDisabled: true,
     selectedCard: '',
@@ -21,15 +20,14 @@ export const gameSlice = createSlice({
       state.gameStage = 'voting';
       state.textareaDisabled = true;
       state.stageButtonText = 'Stop';
-      state.stageNotifyClasses = 'task__notify task__notify--teal';
       state.stageNotifyText = 'Voting';
       state.deckDisabled = false;
+      state.answerVisible = false;
     },
 
     toResults: state => {
       state.gameStage = 'results';
       state.stageButtonText = 'New Task';
-      state.stageNotifyClasses = 'task__notify task__notify--green';
       state.stageNotifyText = 'Results';
       state.deckDisabled = true;
       state.answerVisible = true;
@@ -40,7 +38,6 @@ export const gameSlice = createSlice({
       state.textareaDisabled = false;
       state.taskMessage = '';
       state.stageButtonText = 'Start';
-      state.stageNotifyClasses = 'task__notify';
       state.stageNotifyText = 'Waiting for task';
       state.answer = '';
       state.selectedCard = '';

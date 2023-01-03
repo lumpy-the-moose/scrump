@@ -3,10 +3,12 @@ import Create from './Home/Create';
 import Game from './Game/Game';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { GlobalStyles } from './Styled/Global.styled';
 
 function App() {
   return (
     <>
+      <GlobalStyles />
       <Router basename="/scrump">
         <Routes>
           <Route path="/*" element={<Home />} />

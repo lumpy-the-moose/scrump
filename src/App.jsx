@@ -5,7 +5,7 @@ import Game from './Game/Game';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './Styled/Global.styled';
 
-function App() {
+export default function App() {
   return (
     <>
       <GlobalStyles />
@@ -19,5 +19,3 @@ function App() {
     </>
   );
 }
-
-export default App;

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 
-import { setGameName, setIsAdmin } from './authSlice';
+import { setGameName, setIsAdmin } from '../App/authSlice';
 import {
   setTaskMessage,
   setSelectedCard,
@@ -12,7 +12,7 @@ import {
   toVoting,
   toResults,
   toWaiting,
-} from './gameSlice';
+} from '../App/gameSlice';
 
 export default function Refresh() {
   let [cookies] = useCookies();

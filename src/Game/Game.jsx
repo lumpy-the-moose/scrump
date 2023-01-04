@@ -1,8 +1,8 @@
+import Refresh from './Refresh';
 import Header from './Header';
 import Task from './Task';
 import Team from './Team';
 import Deck from './Deck';
-import Refresh from '../App/Refresh';
 
 import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';

@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import axios from 'axios';
 
 import { setSelectedCard, updateActiveUsers } from '../App/gameSlice';
@@ -9,19 +9,16 @@ import { StyledDeck, DeckTitle, DeckInput, DeckLabel } from '../Styled/Deck.styl
 export default function Deck() {
   let [cookies] = useCookies();
 
-  const dispatch = useDispatch();
-  const { currentSet, deckDisabled, selectedCard } = useSelector(
+  const dispatch = useAppDispatch();
+  const { currentSet, deckDisabled, selectedCard } = useAppSelector(
     state => state.game
   );
 
-  const estimate = async estimate => {
+  const estimate = async (estimate: string) => {
     const r = await axios(
       'https://scrum-poker.space/scrum/poker/sessions/estimate',
       {
         method: 'PATCH',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
           Authorization: cookies.Authorization,
         },

@@ -5,7 +5,7 @@ import Team from './Team';
 import Deck from './Deck';
 
 import { useCookies } from 'react-cookie';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../App/hooks';
 
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
@@ -16,9 +16,8 @@ import { StyledLink } from '../Styled/Link.styled';
 export default function Game() {
   let [cookies] = useCookies();
 
-  const { gameName } = useSelector(state => state.auth);
-
-  const { refreshing } = useSelector(state => state.game);
+  const { gameName } = useAppSelector(state => state.auth);
+  const { refreshing } = useAppSelector(state => state.game);
 
   return (
     <>

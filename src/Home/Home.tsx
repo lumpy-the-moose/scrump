@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import axios from 'axios';
 
 import { setNickname } from '../App/authSlice';
@@ -13,15 +13,12 @@ export default function Home() {
   const location = useLocation();
   let [cookies, setCookie] = useCookies();
 
-  const dispatch = useDispatch();
-  const { nickname } = useSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const { nickname } = useAppSelector(state => state.auth);
 
   const logIn = () => {
     axios(`https://scrum-poker.space/api/auth/login`, {
       method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },
@@ -39,12 +36,9 @@ export default function Home() {
     });
   };
 
-  const joinGame = Authorization => {
+  const joinGame = (Authorization: string) => {
     axios(`https://scrum-poker.space/scrum/poker/sessions${location.pathname}`, {
       method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization,
       },

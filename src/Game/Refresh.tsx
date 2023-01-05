@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
 
@@ -17,15 +17,12 @@ import {
 export default function Refresh() {
   let [cookies] = useCookies();
 
-  const dispatch = useDispatch();
-  const { selectedCard } = useSelector(state => state.game);
+  const dispatch = useAppDispatch();
+  const { selectedCard } = useAppSelector(state => state.game);
 
   const fetchPokerSession = () => {
     axios(`https://scrum-poker.space/scrum/poker/sessions/${cookies.PokerSession}`, {
       method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },
@@ -44,7 +41,7 @@ export default function Refresh() {
       dispatch(updateCurrentSet(r.data.data.estimates));
       dispatch(
         setIsAdmin(
-          r.data.data.users.filter(user => user.admin)[0].nickname ===
+          r.data.data.users.filter((user: any) => user.admin)[0].nickname ===
             cookies.nickname
         )
       );
@@ -52,8 +49,9 @@ export default function Refresh() {
       if (!selectedCard) {
         dispatch(
           setSelectedCard(
-            r.data.data.users.filter(user => user.nickname === cookies.nickname)[0]
-              .estimate
+            r.data.data.users.filter(
+              (user: any) => user.nickname === cookies.nickname
+            )[0].estimate
           )
         );
       }
@@ -88,4 +86,6 @@ export default function Refresh() {
     };
     // eslint-disable-next-line
   }, []);
+
+  return <></>;
 }

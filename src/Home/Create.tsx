@@ -2,7 +2,7 @@ import DeckType from './DeckType';
 
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import axios from 'axios';
 
 import { setGameName } from '../App/authSlice';
@@ -14,15 +14,12 @@ export default function Create() {
   const navigate = useNavigate();
   let [cookies, setCookie] = useCookies();
 
-  const dispatch = useDispatch();
-  const { gameName, deckType } = useSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const { gameName, deckType } = useAppSelector(state => state.auth);
 
   const newGame = () => {
     axios('https://scrum-poker.space/scrum/poker/sessions', {
       method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },

@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
 
@@ -13,20 +13,18 @@ import {
   CustomLabel,
   CustomDot,
 } from '../Styled/DeckType.styled';
+import React from 'react';
 
 export default function DeckType() {
   let [cookies] = useCookies();
 
-  const dispatch = useDispatch();
-  const { setsData, deckType } = useSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const { setsData, deckType } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     async function estimateSets() {
       axios('https://scrum-poker.space/scrum/poker/estimate/sets', {
         method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
           Authorization: cookies.Authorization,
         },
@@ -39,7 +37,7 @@ export default function DeckType() {
     // eslint-disable-next-line
   }, []);
 
-  const setsMarkup = Object.entries(setsData).map((item, index) => (
+  const setsMarkup = Object.entries(setsData).map((item: [string, any], index) => (
     <DeckTypeWrapper key={item[0]}>
       <DeckTypeInput
         type="radio"
@@ -64,7 +62,11 @@ export default function DeckType() {
     </DeckTypeWrapper>
   ));
 
-  const Sets = ({ children }) => {
+  type SetsProps = {
+    children: React.ReactNode;
+  };
+
+  const Sets: React.FC<SetsProps> = ({ children }) => {
     return <StyledDeckType>{children}</StyledDeckType>;
   };
 

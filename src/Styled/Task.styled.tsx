@@ -54,7 +54,7 @@ export const TaskNotify = styled.div`
   height: 30px;
   padding: 5px;
 
-  background-color: ${({ gameStage }) => {
+  background-color: ${({ gameStage }: { gameStage: string }) => {
     // eslint-disable-next-line
     switch (gameStage) {
       case 'waiting':

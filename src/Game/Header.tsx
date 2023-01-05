@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -13,8 +13,8 @@ export default function Header() {
   let [cookies] = useCookies();
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-  const { isAdmin } = useSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const { isAdmin } = useAppSelector(state => state.auth);
 
   const Create = () => {
     closeSession();
@@ -32,9 +32,6 @@ export default function Header() {
   function closeSession() {
     axios('https://scrum-poker.space/scrum/poker/sessions', {
       method: 'DELETE',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },

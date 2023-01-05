@@ -1,5 +1,5 @@
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../App/hooks';
 import axios from 'axios';
 
 import {
@@ -21,22 +21,19 @@ import { Button } from '../Common/FormElements';
 export default function Task() {
   let [cookies] = useCookies();
 
-  const dispatch = useDispatch();
-  const { isAdmin } = useSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const { isAdmin } = useAppSelector(state => state.auth);
   const {
     gameStage,
     textareaDisabled,
     taskMessage,
     stageButtonText,
     stageNotifyText,
-  } = useSelector(state => state.game);
+  } = useAppSelector(state => state.game);
 
   const toggleEstimationProgress = () => {
     axios('https://scrum-poker.space/scrum/poker/sessions/estimationToggle', {
       method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },
@@ -45,12 +42,9 @@ export default function Task() {
     });
   };
 
-  const changeSessionDescription = description => {
+  const changeSessionDescription = (description: string) => {
     axios('https://scrum-poker.space/scrum/poker/sessions/description', {
       method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         Authorization: cookies.Authorization,
       },
@@ -66,11 +60,14 @@ export default function Task() {
     <>
       <StyledTask>
         <TaskDescription
-          rows="5"
+          rows={5}
           placeholder="Describe your task"
           autoFocus
           disabled={!isAdmin || textareaDisabled}
-          onInput={e => dispatch(setTaskMessage(e.target.value))}
+          onInput={e => {
+            const target = e.target as HTMLInputElement;
+            dispatch(setTaskMessage(target.value));
+          }}
           onFocus={() => dispatch(setRefreshing(false))}
           value={taskMessage}
         ></TaskDescription>
@@ -90,7 +87,7 @@ export default function Task() {
                   dispatch(toResults());
                   break;
                 case 'results':
-                  changeSessionDescription(false);
+                  changeSessionDescription('false');
                   dispatch(toWaiting());
                   break;
               }

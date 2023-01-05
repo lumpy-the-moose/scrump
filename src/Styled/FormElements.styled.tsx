@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { getColor } from '../Common/Colors';
 
+import { ButtonProps } from '../Common/FormElements';
+
 export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -31,7 +33,7 @@ export const StyledInput = styled.input`
   }
 `;
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<ButtonProps>`
   display: ${({ display }) => display};
   width: ${({ width }) => width};
   height: ${({ height }) => height};

@@ -51,6 +51,7 @@ export default function Create() {
           }}
         />
         <Button
+          type="button"
           onClick={newGame}
           disabled={!gameName}
           text={'Enter'}

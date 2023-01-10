@@ -42,8 +42,20 @@ export default function Header() {
     <StyledHeader>
       <LogoElement />
       <Auth>
-        <Button onClick={Create} text={'New Game'} width={'110px'} height={'40px'} />
-        <Button onClick={Home} text={'Log Out'} width={'110px'} height={'40px'} />
+        <Button
+          type="button"
+          onClick={Create}
+          text={'New Game'}
+          width={'110px'}
+          height={'40px'}
+        />
+        <Button
+          type="button"
+          onClick={Home}
+          text={'Log Out'}
+          width={'110px'}
+          height={'40px'}
+        />
       </Auth>
     </StyledHeader>
   );

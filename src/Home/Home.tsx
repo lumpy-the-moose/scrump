@@ -16,26 +16,6 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const { nickname } = useAppSelector(state => state.auth);
 
-  const logIn = () => {
-    axios(`https://scrum-poker.space/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        Authorization: cookies.Authorization,
-      },
-      data: {
-        username: nickname,
-      },
-    }).then(r => {
-      setCookie('Authorization', r.data.data, { path: '/' });
-
-      if (location.pathname !== '/') {
-        joinGame(r.data.data);
-      } else {
-        navigate('/create');
-      }
-    });
-  };
-
   const joinGame = (Authorization: string) => {
     axios(`https://scrum-poker.space/scrum/poker/sessions${location.pathname}`, {
       method: 'GET',
@@ -46,8 +26,32 @@ export default function Home() {
         username: nickname,
       },
     }).then(r => {
+      console.log('join');
+      console.timeEnd();
       setCookie('PokerSession', r.data.data.id, { path: '/' });
       navigate('/game');
+    });
+  };
+
+  const logIn = () => {
+    axios(`https://scrum-poker.space/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+      data: {
+        username: nickname,
+      },
+    }).then(r => {
+      console.log('logIn');
+      console.time();
+      setCookie('Authorization', r.data.data, { path: '/' });
+
+      if (location.pathname !== '/') {
+        joinGame(r.data.data);
+      } else {
+        navigate('/create');
+      }
     });
   };
 
@@ -71,6 +75,7 @@ export default function Home() {
           value={nickname}
         />
         <Button
+          type="button"
           onClick={logIn}
           disabled={!nickname}
           text={'Join'}

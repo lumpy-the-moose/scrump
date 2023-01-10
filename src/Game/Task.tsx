@@ -73,6 +73,7 @@ export default function Task() {
         ></TaskDescription>
         <TaskManage>
           <Button
+            type="button"
             onClick={() => {
               // eslint-disable-next-line
               switch (gameStage) {

@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { useAppSelector, useAppDispatch } from '../App/hooks';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { setNickname, setGameName } from '../App/authSlice';
@@ -10,23 +10,24 @@ import { StyledHeader, Auth } from '../Styled/Header.styled';
 import { Button } from '../Common/FormElements';
 
 export default function Header() {
-  let [cookies] = useCookies();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies();
 
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(state => state.auth);
 
   const Create = () => {
-    closeSession();
+    if (isAdmin) closeSession();
     dispatch(setGameName(''));
-    navigate('/create');
+    router.push('/create');
   };
 
   const Home = () => {
     if (isAdmin) closeSession();
     dispatch(setNickname(''));
     dispatch(setGameName(''));
-    navigate('/');
+    setCookie('Authorization', '', { path: '/' });
+    router.push('/');
   };
 
   function closeSession() {

@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-
 import { getColor } from '../Common/Colors';
 
 export const GlobalStyles = createGlobalStyle`
@@ -9,9 +8,7 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-#root {
-  position: relative;
-
+#__next {
   display: flex;
   flex-direction: column;
   align-items: center;

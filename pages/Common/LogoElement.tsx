@@ -1,10 +1,10 @@
-import { ReactComponent as Logo } from '../logo.svg';
 import { StyledLogoElement } from '../Styled/LogoElement.styled';
+import Image from 'next/image';
 
 export default function LogoElement() {
   return (
     <StyledLogoElement>
-      <Logo />
+      <Image src={'logo.svg'} alt={'project logo'} width={64} height={64} />
       |ScrumP|
       <br />
       Planning

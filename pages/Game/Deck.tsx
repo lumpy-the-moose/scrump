@@ -7,7 +7,7 @@ import { setSelectedCard, updateActiveUsers } from '../App/gameSlice';
 import { StyledDeck, DeckTitle, DeckInput, DeckLabel } from '../Styled/Deck.styled';
 
 export default function Deck() {
-  let [cookies] = useCookies();
+  const [cookies] = useCookies();
 
   const dispatch = useAppDispatch();
   const { currentSet, deckDisabled, selectedCard } = useAppSelector(

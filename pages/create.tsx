@@ -1,23 +1,23 @@
-import DeckType from './DeckType';
+import DeckType from './Common/DeckType';
 
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
-import { useAppSelector, useAppDispatch } from '../App/hooks';
+import { useAppSelector, useAppDispatch } from './App/hooks';
 import axios from 'axios';
 
-import { setGameName } from '../App/authSlice';
+import { setGameName } from './App/authSlice';
 
-import LogoElement from '../Common/LogoElement';
-import { Form, Input, Button } from '../Common/FormElements';
+import LogoElement from './Common/LogoElement';
+import { Form, Input, Button } from './Common/FormElements';
 
 export default function Create() {
-  const navigate = useNavigate();
-  let [cookies, setCookie] = useCookies();
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies();
 
   const dispatch = useAppDispatch();
   const { gameName, deckType } = useAppSelector(state => state.auth);
 
-  const newGame = () => {
+  const newGame = async () => {
     axios('https://scrum-poker.space/scrum/poker/sessions', {
       method: 'POST',
       headers: {
@@ -27,10 +27,13 @@ export default function Create() {
         name: gameName,
         estimateSetName: deckType,
       },
-    }).then(r => {
-      setCookie('PokerSession', r.data.data.id, { path: '/' });
-      navigate('/game');
-    });
+    })
+      .then(r => {
+        setCookie('PokerSession', r.data.data.id, { path: '/' });
+      })
+      .then(() => {
+        router.push('/game');
+      });
   };
 
   return (
@@ -51,8 +54,7 @@ export default function Create() {
           }}
         />
         <Button
-          type="button"
-          onClick={newGame}
+          type="submit"
           disabled={!gameName}
           text={'Enter'}
           width={'150px'}

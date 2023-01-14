@@ -15,7 +15,7 @@ import {
 } from '../App/gameSlice';
 
 export default function Refresh() {
-  let [cookies] = useCookies();
+  const [cookies] = useCookies();
 
   const dispatch = useAppDispatch();
   const { selectedCard } = useAppSelector(state => state.game);
@@ -79,7 +79,7 @@ export default function Refresh() {
 
   useEffect(() => {
     fetchPokerSession();
-    const interval = setInterval(fetchPokerSession, 3000);
+    const interval = setInterval(fetchPokerSession, 2000);
 
     return () => {
       clearInterval(interval);

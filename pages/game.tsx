@@ -1,20 +1,20 @@
-import Refresh from './Refresh';
-import Header from './Header';
-import Task from './Task';
-import Team from './Team';
-import Deck from './Deck';
+import Refresh from './Game/Refresh';
+import Header from './Game/Header';
+import Task from './Game/Task';
+import Team from './Game/Team';
+import Deck from './Game/Deck';
 
 import { useCookies } from 'react-cookie';
-import { useAppSelector } from '../App/hooks';
+import { useAppSelector } from './App/hooks';
 
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
-import { GameInfo, GameTitle, GameTitleAccent } from '../Styled/Game.styled';
-import { StyledLink } from '../Styled/Link.styled';
+import { GameInfo, GameTitle, GameTitleAccent } from './Styled/Game.styled';
+import { StyledLink } from './Styled/Link.styled';
 
 export default function Game() {
-  let [cookies] = useCookies();
+  const [cookies] = useCookies();
 
   const { gameName } = useAppSelector(state => state.auth);
   const { refreshing } = useAppSelector(state => state.game);

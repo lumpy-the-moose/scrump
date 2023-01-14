@@ -29,7 +29,7 @@ export const Input: React.FC<{
 
 export interface ButtonProps {
   type?: 'button' | 'reset' | 'submit';
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   text?: string;
   display?: string;

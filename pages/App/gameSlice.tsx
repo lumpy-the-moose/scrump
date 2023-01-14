@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface gameState {
   refreshing: boolean;
-  gameStage: string;
+  gameStage: 'waiting' | 'voting' | 'results';
   textareaDisabled: boolean;
   taskMessage: string;
   stageButtonText: string;
@@ -56,6 +56,7 @@ export const gameSlice = createSlice({
       state.stageButtonText = 'Start';
       state.stageNotifyText = 'Waiting for task';
       state.selectedCard = '';
+      state.deckDisabled = true;
       state.answerVisible = false;
     },
 

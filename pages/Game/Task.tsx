@@ -19,7 +19,7 @@ import {
 import { Button } from '../Common/FormElements';
 
 export default function Task() {
-  let [cookies] = useCookies();
+  const [cookies] = useCookies();
 
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(state => state.auth);
@@ -62,7 +62,6 @@ export default function Task() {
         <TaskDescription
           rows={5}
           placeholder="Describe your task"
-          autoFocus
           disabled={!isAdmin || textareaDisabled}
           onInput={e => {
             const target = e.target as HTMLInputElement;

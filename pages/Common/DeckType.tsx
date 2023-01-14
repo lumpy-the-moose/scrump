@@ -16,23 +16,23 @@ import {
 import React from 'react';
 
 export default function DeckType() {
-  let [cookies] = useCookies();
+  const [cookies] = useCookies();
 
   const dispatch = useAppDispatch();
   const { setsData, deckType } = useAppSelector(state => state.auth);
 
-  useEffect(() => {
-    async function estimateSets() {
-      axios('https://scrum-poker.space/scrum/poker/estimate/sets', {
-        method: 'GET',
-        headers: {
-          Authorization: cookies.Authorization,
-        },
-      }).then(r => {
-        dispatch(updateSetsData({ ...r.data.data }));
-      });
-    }
+  async function estimateSets() {
+    axios('https://scrum-poker.space/scrum/poker/estimate/sets', {
+      method: 'GET',
+      headers: {
+        Authorization: cookies.Authorization,
+      },
+    }).then(r => {
+      dispatch(updateSetsData({ ...r.data.data }));
+    });
+  }
 
+  useEffect(() => {
     estimateSets();
     // eslint-disable-next-line
   }, []);

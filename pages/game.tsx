@@ -7,8 +7,6 @@ import Deck from './Game/Deck';
 import { useCookies } from 'react-cookie';
 import { useAppSelector } from './App/hooks';
 
-import { IconContext } from 'react-icons';
-import { FaLink } from 'react-icons/fa';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
@@ -31,16 +29,13 @@ export default function Game() {
         </GameTitle>
         <StyledLink
           id="gameLink"
+          size={'32px'}
           onClick={() => {
             navigator.clipboard.writeText(
               window.location.href.slice(0, -4) + cookies.PokerSession
             );
           }}
-        >
-          <IconContext.Provider value={{ size: '32px' }}>
-            <FaLink />
-          </IconContext.Provider>
-        </StyledLink>
+        />
         <Tooltip anchorId="gameLink" content="Copy Game Link" place="top" />
       </GameInfo>
       <Task />

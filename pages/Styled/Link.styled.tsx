@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { Link } from '@styled-icons/entypo';
 
 import { getColor } from '../Common/Colors';
 
-export const StyledLink = styled(Link)`
+export const StyledLink = styled.div`
   color: ${getColor('grey')};
   transition: all 250ms ease;
   outline: none;

@@ -1,14 +1,14 @@
-import DeckType from './Common/DeckType';
+import DeckType from '../components/Common/DeckType';
 
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
-import { useAppSelector, useAppDispatch } from './App/hooks';
+import { useAppSelector, useAppDispatch } from '../components/App/hooks';
 import axios from 'axios';
 
-import { setGameName } from './App/authSlice';
+import { setGameName } from '../components/App/authSlice';
 
-import LogoElement from './Common/LogoElement';
-import { Form, Input, Button } from './Common/FormElements';
+import LogoElement from '../components/Common/LogoElement';
+import { Form, Input, Button } from '../components/Common/FormElements';
 
 export default function Create() {
   const router = useRouter();

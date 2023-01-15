@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "babel src -d lib",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -20,6 +20,7 @@
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
+    "react-is": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-tooltip": "^5.3.2",
     "styled-components": "^5.3.6",

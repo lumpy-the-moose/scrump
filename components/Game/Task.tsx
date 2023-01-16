@@ -23,13 +23,7 @@ export default function Task() {
 
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(state => state.auth);
-  const {
-    gameStage,
-    textareaDisabled,
-    taskMessage,
-    stageButtonText,
-    stageNotifyText,
-  } = useAppSelector(state => state.game);
+  const { gameStage, taskMessage } = useAppSelector(state => state.game);
 
   const toggleEstimationProgress = () => {
     axios('https://scrum-poker.space/scrum/poker/sessions/estimationToggle', {
@@ -57,51 +51,60 @@ export default function Task() {
   };
 
   return (
-    <>
-      <StyledTask>
-        <TaskDescription
-          rows={5}
-          placeholder="Describe your task"
-          disabled={!isAdmin || textareaDisabled}
-          onInput={e => {
-            const target = e.target as HTMLInputElement;
-            dispatch(setTaskMessage(target.value));
+    <StyledTask>
+      <TaskDescription
+        rows={5}
+        placeholder="Describe your task"
+        disabled={!isAdmin || gameStage !== 'waiting'}
+        onInput={e => {
+          const target = e.target as HTMLInputElement;
+          dispatch(setTaskMessage(target.value));
+        }}
+        onFocus={() => dispatch(setRefreshing(false))}
+        value={taskMessage}
+      ></TaskDescription>
+      <TaskManage>
+        <Button
+          type="button"
+          onClick={() => {
+            switch (gameStage) {
+              case 'waiting':
+                toggleEstimationProgress();
+                changeSessionDescription(taskMessage);
+                dispatch(toVoting());
+                dispatch(setRefreshing(true));
+                break;
+              case 'voting':
+                toggleEstimationProgress();
+                dispatch(toResults());
+                break;
+              case 'results':
+                changeSessionDescription('false');
+                dispatch(toWaiting());
+                break;
+            }
           }}
-          onFocus={() => dispatch(setRefreshing(false))}
-          value={taskMessage}
-        ></TaskDescription>
-        <TaskManage>
-          <Button
-            type="button"
-            onClick={() => {
-              // eslint-disable-next-line
-              switch (gameStage) {
-                case 'waiting':
-                  toggleEstimationProgress();
-                  changeSessionDescription(taskMessage);
-                  dispatch(toVoting());
-                  dispatch(setRefreshing(true));
-                  break;
-                case 'voting':
-                  toggleEstimationProgress();
-                  dispatch(toResults());
-                  break;
-                case 'results':
-                  changeSessionDescription('false');
-                  dispatch(toWaiting());
-                  break;
-              }
-            }}
-            disabled={!taskMessage}
-            text={stageButtonText}
-            display={isAdmin ? 'block' : 'none'}
-            width={'180px'}
-            height={'45px'}
-            mobileWidth={'140px'}
-          />
-          <TaskNotify gameStage={gameStage}>{stageNotifyText}</TaskNotify>
-        </TaskManage>
-      </StyledTask>
-    </>
+          disabled={!taskMessage}
+          text={
+            gameStage === 'waiting'
+              ? 'Start'
+              : gameStage === 'voting'
+              ? 'Stop'
+              : 'New Task'
+          }
+          display={isAdmin ? 'block' : 'none'}
+          width={'180px'}
+          height={'45px'}
+          mobileWidth={'140px'}
+        />
+        <TaskNotify gameStage={gameStage}>
+          {gameStage === 'waiting'
+            ? 'Waiting for task'
+            : gameStage === 'voting'
+            ? 'Voting'
+            : 'Results'}
+        </TaskNotify>
+      </TaskManage>
+    </StyledTask>
   );
 }

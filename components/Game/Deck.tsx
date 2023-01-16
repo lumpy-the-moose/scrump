@@ -10,7 +10,7 @@ export default function Deck() {
   const [cookies] = useCookies();
 
   const dispatch = useAppDispatch();
-  const { currentSet, deckDisabled, selectedCard } = useAppSelector(
+  const { gameStage, currentSet, selectedCard } = useAppSelector(
     state => state.game
   );
 
@@ -38,7 +38,7 @@ export default function Deck() {
         name="card"
         id={item}
         value={item}
-        disabled={deckDisabled}
+        disabled={gameStage !== 'voting'}
         onChange={e => {
           estimate(e.target.value);
           dispatch(setSelectedCard(e.target.value));

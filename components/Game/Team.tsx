@@ -3,13 +3,13 @@ import { useAppSelector } from '../App/hooks';
 import { StyledTeam, TeamTitle, User, Answer } from '../Styled/Team.styled';
 
 export default function Team() {
-  const { activeUsers, answerVisible } = useAppSelector(state => state.game);
+  const { gameStage, activeUsers } = useAppSelector(state => state.game);
 
   const teamMarkup = activeUsers.map(
     ({ nickname, estimate }: { nickname?: any; estimate?: string }) => (
       <User key={nickname}>
         {nickname}
-        <Answer>{answerVisible ? estimate : false}</Answer>
+        <Answer>{gameStage === 'results' ? estimate : false}</Answer>
       </User>
     )
   );

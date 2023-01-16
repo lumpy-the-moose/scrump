@@ -3,13 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface gameState {
   refreshing: boolean;
   gameStage: 'waiting' | 'voting' | 'results';
-  textareaDisabled: boolean;
   taskMessage: string;
-  stageButtonText: string;
-  stageNotifyText: string;
-  deckDisabled: boolean;
   selectedCard: string;
-  answerVisible: boolean;
   activeUsers: {}[];
   currentSet: string[];
 }
@@ -17,13 +12,8 @@ interface gameState {
 const initialState: gameState = {
   refreshing: true,
   gameStage: 'waiting',
-  textareaDisabled: false,
   taskMessage: '',
-  stageButtonText: 'Start',
-  stageNotifyText: 'Waiting for task',
-  deckDisabled: true,
   selectedCard: '',
-  answerVisible: false,
   activeUsers: [],
   currentSet: [],
 };
@@ -34,30 +24,16 @@ export const gameSlice = createSlice({
   reducers: {
     toVoting: state => {
       state.gameStage = 'voting';
-      state.textareaDisabled = true;
-      state.stageButtonText = 'Stop';
-      state.stageNotifyText = 'Voting';
-      state.deckDisabled = false;
-      state.answerVisible = false;
     },
 
     toResults: state => {
       state.gameStage = 'results';
-      state.stageButtonText = 'New Task';
-      state.stageNotifyText = 'Results';
-      state.deckDisabled = true;
-      state.answerVisible = true;
     },
 
     toWaiting: state => {
       state.gameStage = 'waiting';
-      state.textareaDisabled = false;
       state.taskMessage = '';
-      state.stageButtonText = 'Start';
-      state.stageNotifyText = 'Waiting for task';
       state.selectedCard = '';
-      state.deckDisabled = true;
-      state.answerVisible = false;
     },
 
     setRefreshing: (state, action: PayloadAction<boolean>) => {

@@ -84,7 +84,6 @@ export default function Refresh() {
     return () => {
       clearInterval(interval);
     };
-    // eslint-disable-next-line
   }, []);
 
   return <></>;

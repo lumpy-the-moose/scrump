@@ -2,7 +2,7 @@ import { useCookies } from 'react-cookie';
 import { useAppSelector, useAppDispatch } from '../App/hooks';
 import axios from 'axios';
 
-import { setSelectedCard, updateActiveUsers } from '../App/gameSlice';
+import { setSelectedCard } from '../App/gameSlice';
 
 import { StyledDeck, DeckTitle, DeckInput, DeckLabel } from '../Styled/Deck.styled';
 
@@ -27,8 +27,6 @@ export default function Deck() {
         },
       }
     );
-
-    dispatch(updateActiveUsers(r.data.data.users));
   };
 
   const deckMarkup = currentSet.map(item => (

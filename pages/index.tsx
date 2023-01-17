@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { useAppSelector, useAppDispatch } from '../components/App/hooks';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 import { setNickname } from '../components/App/authSlice';
@@ -14,6 +15,10 @@ export default function Home() {
 
   const dispatch = useAppDispatch();
   const { nickname } = useAppSelector(state => state.auth);
+
+  useEffect(() => {
+    router.prefetch('/create');
+  }, []);
 
   const logIn = async () => {
     axios(`https://scrum-poker.space/api/auth/login`, {

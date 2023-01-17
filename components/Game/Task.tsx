@@ -31,8 +31,6 @@ export default function Task() {
       headers: {
         Authorization: cookies.Authorization,
       },
-    }).then(r => {
-      console.log('estimatingInProgress', r.data.data.estimatingInProgress);
     });
   };
 
@@ -45,8 +43,6 @@ export default function Task() {
       data: {
         description,
       },
-    }).then(r => {
-      console.log('taskDescription', r.data.data.taskDescription);
     });
   };
 

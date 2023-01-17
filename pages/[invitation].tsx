@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { useAppSelector, useAppDispatch } from '../components/App/hooks';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 import { setNickname } from '../components/App/authSlice';
@@ -15,6 +16,10 @@ export default function Invitation() {
 
   const dispatch = useAppDispatch();
   const { nickname } = useAppSelector(state => state.auth);
+
+  useEffect(() => {
+    router.prefetch('/game');
+  }, []);
 
   const joinGame = async () => {
     axios(`https://scrum-poker.space/api/auth/login`, {

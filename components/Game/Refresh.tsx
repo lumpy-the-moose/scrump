@@ -26,55 +26,56 @@ export default function Refresh() {
       headers: {
         Authorization: cookies.Authorization,
       },
-    }).then(r => {
-      console.log(r.data.data);
+    })
+      .then(r => r.data.data)
+      .then(r => {
+        console.log(r);
 
-      dispatch(setGameName(r.data.data.name));
-      dispatch(
-        setTaskMessage(
-          r.data.data.taskDescription && r.data.data.taskDescription !== 'false'
-            ? r.data.data.taskDescription
-            : ''
-        )
-      );
-      dispatch(updateActiveUsers(r.data.data.users));
-      dispatch(updateCurrentSet(r.data.data.estimates));
-      dispatch(
-        setIsAdmin(
-          r.data.data.users.filter((user: any) => user.admin)[0].nickname ===
-            cookies.nickname
-        )
-      );
-
-      if (!selectedCard) {
+        dispatch(setGameName(r.name));
         dispatch(
-          setSelectedCard(
-            r.data.data.users.filter(
-              (user: any) => user.nickname === cookies.nickname
-            )[0].estimate
+          setTaskMessage(
+            r.taskDescription && r.taskDescription !== 'false'
+              ? r.taskDescription
+              : ''
           )
         );
-      }
+        dispatch(updateActiveUsers(r.users));
+        dispatch(updateCurrentSet(r.estimates));
+        dispatch(
+          setIsAdmin(
+            r.users.filter((user: any) => user.admin)[0].nickname ===
+              cookies.nickname
+          )
+        );
 
-      if (r.data.data.estimatingInProgress) {
-        dispatch(toVoting());
-      }
+        if (!selectedCard) {
+          dispatch(
+            setSelectedCard(
+              r.users.filter((user: any) => user.nickname === cookies.nickname)[0]
+                .estimate
+            )
+          );
+        }
 
-      if (
-        !r.data.data.estimatingInProgress &&
-        r.data.data.taskDescription !== null &&
-        r.data.data.taskDescription !== 'false'
-      ) {
-        console.log('results');
-        dispatch(toResults());
-        return;
-      }
+        if (r.estimatingInProgress) {
+          dispatch(toVoting());
+        }
 
-      if (!r.data.data.estimatingInProgress) {
-        console.log('waiting');
-        dispatch(toWaiting());
-      }
-    });
+        if (
+          !r.estimatingInProgress &&
+          r.taskDescription !== null &&
+          r.taskDescription !== 'false'
+        ) {
+          console.log('results');
+          dispatch(toResults());
+          return;
+        }
+
+        if (!r.estimatingInProgress) {
+          console.log('waiting');
+          dispatch(toWaiting());
+        }
+      });
   };
 
   useEffect(() => {

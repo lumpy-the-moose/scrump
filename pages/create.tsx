@@ -3,6 +3,7 @@ import DeckType from '../components/Common/DeckType';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { useAppSelector, useAppDispatch } from '../components/App/hooks';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 import { setGameName } from '../components/App/authSlice';
@@ -16,6 +17,10 @@ export default function Create() {
 
   const dispatch = useAppDispatch();
   const { gameName, deckType } = useAppSelector(state => state.auth);
+
+  useEffect(() => {
+    router.prefetch('/game');
+  }, []);
 
   const newGame = async () => {
     axios('https://scrum-poker.space/scrum/poker/sessions', {

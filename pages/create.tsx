@@ -1,4 +1,4 @@
-import DeckType from '../components/Common/DeckType';
+import DeckType from '../components/Game/DeckType';
 
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';

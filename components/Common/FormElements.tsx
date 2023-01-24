@@ -22,7 +22,6 @@ export const Input: React.FC<{
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      autoFocus
     ></StyledInput>
   );
 };
@@ -30,6 +29,7 @@ export const Input: React.FC<{
 export interface ButtonProps {
   type?: 'button' | 'reset' | 'submit';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onTouchStart?: React.TouchEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   text?: string;
   display?: string;
@@ -41,6 +41,7 @@ export interface ButtonProps {
 export const Button: React.FC<ButtonProps> = ({
   type,
   onClick,
+  onTouchStart,
   disabled,
   text,
   display,
@@ -52,6 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
     <StyledButton
       type={type}
       onClick={onClick}
+      onTouchStart={onTouchStart}
       disabled={disabled}
       display={display}
       width={width}

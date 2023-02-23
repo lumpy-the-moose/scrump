@@ -3,6 +3,9 @@ import { useAppSelector, useAppDispatch } from '../App/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
 
+// @ts-ignore
+import SockJsClient from 'react-stomp';
+
 import { setGameName, setIsAdmin } from '../App/authSlice';
 import {
   setTaskMessage,
@@ -87,5 +90,17 @@ export default function Refresh() {
     };
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <SockJsClient
+        url="https://scrum-poker.space/scrum/poker/ws"
+        topics={['/poker/' + cookies.PokerSession]}
+        headers={{ Authorization: cookies.Authorization }}
+        subscribeHeaders={{ Authorization: cookies.Authorization }}
+        onMessage={(msg: []) => {
+          console.log(msg);
+        }}
+      />
+    </>
+  );
 }
